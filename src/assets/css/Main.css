@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;600;700;800&display=swap');
+
+body {
+
+    font-family: 'Nunito Sans', sans-serif  !important;
+    background-color: #1a1a1a !important;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dc0b9b;
+  border: 0px none transparent;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ef5727;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #ef5727;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border: 0px none transparent;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track:active {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+/* /Select/ */
+ul.listhow
+{
+  display: block;
+}
+ul.listhow>li
+{
+color: #fff;
+margin-bottom: 10px;
+}
+ul.listhow>li::marker
+{
+  color: #dc0b9b;
+}
+/* / Footer / */
+
+.footerLinks a {
+  width: fit-content;
+  position: relative;
+}
+
+.footerLinks a::before {
+  transition: .3s;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  transform: translate(0, -50%);
+  background-color: #a6a6a6;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+}
+
+.footerLinks a:hover::before {
+  background-color: #f79e22;
+}
+
+.footerLinks a:hover {
+  color: #f79e22;
+}
+
+.customRadio label span::before {
+  background-color: #38a169 !important;
+}
+
+.verified::before {
+  background-color: #f79e22 !important;
+}
+
+.directorBlock:hover p {
+  height: 150px;
+  overflow: auto;
+}
+input, select{border-color: #000 !important;}
+.ftlinks
+{
+  list-style: none;
+}
+[type="file"]::-webkit-file-upload-button
+{
+  background-color: transparent;
+  opacity: 0;
+}
+.chckbox span.chakra-checkbox__control {
+  position: absolute;
+  background: transparent;
+  padding: 10px 20px;
+  border: none;
+  z-index: -1;
+  width: 100%;
+  height: -webkit-fill-available;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
+span.chakra-checkbox__control[data-checked]
+{
+  background: #db0bcb;
+}
+
+.chckbox {
+  position: relative;
+  z-index: 1;
+}
+
+.chckbox span.chakra-checkbox__control svg {
+  opacity: 0;
+  display: none;
+}
+option
+{
+  background-color: #000 !important;
+}
+
+/* @media (max-width: 767px) {
+  .footerLinks a{font-size: 14px;margin-top: 10px !important;}
+
+@media (max-width: 1440px)
+{
+  
+}
+
+@media (max-width: 1024px){
+	
+}
+
+@media (max-width:1200px){
+
+
+} */
