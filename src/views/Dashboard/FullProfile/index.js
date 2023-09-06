@@ -544,16 +544,12 @@ export default function Index() {
                     datas?.events?.map(item => {
                       return (
                         <Box
-                          backgroundImage={Event1}
+                          backgroundImage={imgUrl+item?.picture}
                           key={item?._id}
                           w={'346px'}
                           py={'4'}
                         >
-                          {/* <Box bg={'pHeading.100'} w={'100px'} py={'1'} mb={'6'}>
-                          <CustomPara marginBottom={'0'} textAlign={'center'}>
-                            Today
-                          </CustomPara>
-                        </Box> */}
+                        
                           <Stack px={'4'} mb={'24'}>
                             <CustomHeading
                               color={'#fff'}
@@ -562,6 +558,16 @@ export default function Index() {
                               mb={'0'}
                             >
                               {item?.name}
+                            </CustomHeading>
+                          </Stack>
+                          <Stack px={'4'} mb={'24'}>
+                            <CustomHeading
+                              color={'#fff'}
+                              fontSize={'25px'}
+                              textAlign={'left'}
+                              mb={'0'}
+                            >
+                              {item?.description}
                             </CustomHeading>
                           </Stack>
                           <Stack
