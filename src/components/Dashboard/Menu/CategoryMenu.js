@@ -14,16 +14,18 @@ import {
   ModalOverlay,
   Stack,
   Text,
+  Textarea,
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import BorderButton from '../../../components/Website/Buttons/BorderButton';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
+import { useToast } from '@chakra-ui/react';
 import { AiFillDelete } from 'react-icons/ai';
 import { Icon } from '@chakra-ui/icons';
 import CustomPara from '../../../components/Website/Paragraph/CustomPara';
-import { GET } from '../../../utilities/ApiProvider';
+import { GET, POST } from '../../../utilities/ApiProvider';
 
 const signupstyle = {
   outline: '1px solid #fff',
@@ -32,8 +34,15 @@ const signupstyle = {
   color: '#fff',
 };
 
-export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
+export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
+  const toast = useToast();
   const [data, setData] = useState([]);
+  const [cat, setCat] = useState({
+    name: '',
+    description: '',
+    category_image: '',
+    parent: '',
+  });
 
   const OverlayOne = () => (
     <ModalOverlay
@@ -66,6 +75,64 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
   } = useDisclosure();
 
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
+
+  const parentData = e => {
+    setCat({
+      ...cat,
+      parent: e,
+    });
+    console.log(e);
+  };
+
+  console.log(cat);
+
+  const submitCat = async () => {
+    const formdata = new FormData();
+
+    formdata.append('name', cat.name);
+    formdata.append('description', cat.description);
+    formdata.append('category_image', cat.category_image);
+    formdata.append('parent', cat.parent);
+
+    try {
+      const res = await POST('admin/category', formdata, {
+        authorization: `bearer ${token}`,
+      });
+      console.log(res);
+      if (res.status == 'success') {
+        toast({
+          position: 'bottom-left',
+          isClosable: true,
+          description: 'Success',
+          duration: 5000,
+          status: 'success',
+        });
+        setCat({
+          name: '',
+          description: '',
+          parent: '',
+          category_image: '',
+        });
+        onAddCategoryClose();
+      } else {
+        toast({
+          position: 'bottom-left',
+          isClosable: true,
+          description: 'Something went wrong',
+          duration: 5000,
+          status: 'error',
+        });
+      }
+    } catch (error) {
+      toast({
+        position: 'bottom-left',
+        isClosable: true,
+        description: 'Something went wrong',
+        duration: 5000,
+        status: error,
+      });
+    }
+  };
 
   return (
     <>
@@ -103,8 +170,12 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
                   bottom={'0'}
                   top={'0'}
                   h={'100%'}
+                  onChange={e => {
+                    setCat({ ...cat, category_image: e.target.files[0] });
+                  }}
                   cursor={'pointer'}
                   color={'white'}
+                  value={cat.category_image}
                   py={'34px'}
                   type={'file'}
                   name={'file'}
@@ -113,14 +184,31 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
               <Input
                 sx={signupstyle}
                 placeholder={'Title'}
-                type="Name"
+                value={cat.name}
+                onChange={e => {
+                  setCat({ ...cat, name: e.target.value });
+                }}
+                type="text"
                 _placeholder={{ color: '#fff' }}
               />
+              <Textarea
+                onChange={e => {
+                  setCat({ ...cat, description: e.target.value });
+                }}
+                color={'white'}
+                value={cat.description}
+                placeholder="Description"
+              ></Textarea>
             </Stack>
           </ModalBody>
           <ModalFooter>
             <Stack direction={'row'} w={'full'} justifyContent={'center'}>
-              <Button bg={'pHeading.100'} color={'#fff'} px={'14'}>
+              <Button
+                onClick={submitCat}
+                bg={'pHeading.100'}
+                color={'#fff'}
+                px={'14'}
+              >
                 Continue
               </Button>
               <Button onClick={onAddCategoryClose}>Discard</Button>
@@ -356,7 +444,7 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
               Choose Category
             </Text>
           </Box>
-          <Box>
+          {/* <Box>
             <Button
               bg={'transparent'}
               textAlign={'center'}
@@ -370,14 +458,11 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
               _hover={{
                 color: 'primaryText.200',
               }}
-              onClick={() => {
-                setOverlay(<OverlayOne />);
-                onAddCategoryOpen();
-              }}
+              onClick={() => {}}
             >
               Add New Category
             </Button>
-          </Box>
+          </Box> */}
         </Stack>
         {data?.length > 0 ? (
           data?.length > 0 &&
@@ -406,6 +491,28 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
                     </Text>
                   </Box>
                   <Box w={'49%'} textAlign={'right'}>
+                    <Button
+                      bg={'transparent'}
+                      textAlign={'center'}
+                      margin={'auto'}
+                      py={'5px'}
+                      px={'8'}
+                      lineHeight={'inherit'}
+                      border={'1px solid #fff'}
+                      borderRadius={'6px'}
+                      color={'#fff'}
+                      ml={'4px'}
+                      onClick={() => {
+                        setOverlay(<OverlayOne />);
+                        onAddCategoryOpen();
+                        parentData(item._id);
+                      }}
+                      _hover={{
+                        color: 'primaryText.200',
+                      }}
+                    >
+                      Add
+                    </Button>
                     <Button
                       bg={'transparent'}
                       textAlign={'center'}
@@ -459,16 +566,17 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId }) {
                   justifyContent={'space-between'}
                   p={'0px 35px'}
                 >
-                  <CheckboxGroup onChange={(e)=>{getSubCatId(e)}} >
+                  <CheckboxGroup
+                    onChange={e => {
+                      getSubCatId(e);
+                    }}
+                  >
                     <Box lineHeight={'30px'}>
                       {item?.subcategories?.length > 0 ? (
                         item?.subcategories?.map(value => {
                           return (
                             <>
-                              <Checkbox
-                                value={value?._id}
-                                color={'#fff'}
-                              >
+                              <Checkbox value={value?._id} color={'#fff'}>
                                 {value?.name}
                               </Checkbox>
                               <br />

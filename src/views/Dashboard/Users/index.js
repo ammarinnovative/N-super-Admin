@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 import OrderSalesCharts from '../../../components/Dashboard/Order/OrderSalesCharts';
 import BorderButton from '../../../components/Website/Buttons/BorderButton';
 import { useState } from 'react';
+import Pagination from "../../../components/Dashboard/Pagination/Pagination";
 import { useEffect } from 'react';
 import { GET } from '../../../utilities/ApiProvider';
 import { Global } from '@emotion/react';
@@ -256,8 +257,8 @@ export default function Index() {
               </TabPanel>
             </TabPanels>
           </Tabs>
+          <Pagination />
         </Stack>
-        {/* Third row stack Ends */}
       </MainDashboard>
     </>
   );

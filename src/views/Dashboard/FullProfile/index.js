@@ -25,6 +25,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  selector,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import BorderButton from '../../../components/Website/Buttons/BorderButton';
@@ -34,6 +35,7 @@ import Event1 from '../../../assets/images/event/e1.jpg';
 import MainDashboard from '../MainDashboard';
 import { AiOutlineSearch, AiOutlinePlusCircle } from 'react-icons/ai';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
 import { FaFacebook } from 'react-icons/fa';
 import { FiInstagram } from 'react-icons/fi';
 import { AiOutlineTwitter } from 'react-icons/ai';
@@ -46,6 +48,7 @@ import { GET, POST } from '../../../utilities/ApiProvider';
 import Ownerprofile from '../../../assets/images/01.png';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import cat1 from '../../../assets/images/menu/c1.jpg';
 import menu1 from '../../../assets/images/menu/menu1.jpg';
 import { Link as ReactLink } from 'react-router-dom';
@@ -56,7 +59,9 @@ export default function Index() {
   const [posts, setPost] = useState([]);
   const [Hashtags, setHashtags] = useState([]);
   const [hashtagData, sethashtagData] = useState([]);
+  const [user,setUser] = useState({});
   const toast = useToast();
+  const selcetor = useSelector(state=>state);
   const [isLoading, setisLoading] = useState(false);
 
   const OverlayOne = () => (
@@ -69,9 +74,21 @@ export default function Index() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
 
+
+
+  const params = useParams();
+
+  const getEvents = async ()=>{
+    const res = await GET(`admin/bar/details/${params.id}`,{
+      authorization:`bearer ${user?.verificationToken}`
+    });
+  }
+
+
   useEffect(() => {
-    getHastags();
-    getPosts();
+    // getHastags();
+    // getPosts();
+    
   }, []);
 
   const getPosts = async () => {
@@ -133,6 +150,13 @@ export default function Index() {
       });
     }
   };
+
+
+  useEffect(()=>{
+    if(selector){
+      setUser(selector?.value);
+    }
+  },[selector]);
 
   const signupstyle = {
     outline: '1px solid #fff',

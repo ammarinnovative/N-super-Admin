@@ -92,7 +92,10 @@ export default function Menu() {
     });
   };
 
-  console.log(fields);
+  // const getCat = async ()=>{
+  //   const res = await POST("");
+  // }
+
 
   const selector = useSelector(state => state);
 
@@ -188,7 +191,7 @@ export default function Menu() {
             </Box>
             <Button onClick={submitData}>sub</Button>
 
-            <CategoryMenu getSubCatId={getSubCatId} getMenuData={getMenuData} />
+            <CategoryMenu getSubCatId={getSubCatId} token={user?.verificationToken} getMenuData={getMenuData} />
           </Stack>
           {/* Second Div Ends */}
         </Stack>
