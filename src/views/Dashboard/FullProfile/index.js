@@ -45,7 +45,7 @@ import { AiFillCar } from 'react-icons/ai';
 import { CgWebsite } from 'react-icons/cg';
 import { FiPhoneCall } from 'react-icons/fi';
 import { Icon } from '@chakra-ui/icons';
-import { GET, POST } from '../../../utilities/ApiProvider';
+import { GET, POST, PUT } from '../../../utilities/ApiProvider';
 import Ownerprofile from '../../../assets/images/01.png';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
@@ -53,6 +53,7 @@ import { useParams } from 'react-router-dom';
 import cat1 from '../../../assets/images/menu/c1.jpg';
 import menu1 from '../../../assets/images/menu/menu1.jpg';
 import { Link as ReactLink } from 'react-router-dom';
+import { data } from '../Analytics';
 
 export default function Index() {
   const [posts, setPost] = useState([]);
@@ -163,7 +164,43 @@ export default function Index() {
     color: '#fff',
   };
 
-  console.log(datas);
+  const SuspendAccount = async () => {
+    try {
+      const res = await PUT(
+        `admin/bar/${params.id}/suspend`,
+        {
+          authorization: `bearer ${user?.verificationToken}`,
+        }
+      );
+      console.log('res', res);
+      if (res.status == 200) {
+        toast({
+          position: 'bottom-left',
+          isClosable: true,
+          duration: 5000,
+          status: 'success',
+          description: 'success',
+        });
+        getEvents();
+      } else {
+        toast({
+          position: 'bottom-left',
+          isClosable: true,
+          duration: 5000,
+          status: 'error',
+          description: res.data.message,
+        });
+      }
+    } catch (error) {
+      toast({
+        position: 'bottom-left',
+        isClosable: true,
+        duration: 5000,
+        status: 'error',
+        description: error,
+      });
+    }
+  };
 
   return (
     <>
@@ -225,7 +262,15 @@ export default function Index() {
                             Account Info
                           </Link>
                         </MenuItem>
-                        <MenuItem>Delete Account</MenuItem>
+                        {
+                          datas?.isSuspended?
+                          <MenuItem onClick={SuspendAccount}>
+                          Active Account
+                        </MenuItem>:<MenuItem onClick={SuspendAccount}>
+                          Block Account
+                        </MenuItem>
+                        }
+                        
                       </MenuList>
                     </Menu>
                   </Box>
@@ -544,12 +589,11 @@ export default function Index() {
                     datas?.events?.map(item => {
                       return (
                         <Box
-                          backgroundImage={imgUrl+item?.picture}
+                          backgroundImage={imgUrl + item?.picture}
                           key={item?._id}
                           w={'346px'}
                           py={'4'}
                         >
-                        
                           <Stack px={'4'} mb={'24'}>
                             <CustomHeading
                               color={'#fff'}
@@ -763,7 +807,11 @@ export default function Index() {
                             alignItems={'center'}
                           >
                             <Box>
-                              <Img src={imgUrl+item?.profile_picture} w={'80px'} h={'80px'} />
+                              <Img
+                                src={imgUrl + item?.profile_picture}
+                                w={'80px'}
+                                h={'80px'}
+                              />
                             </Box>
                             <Box>
                               <CustomPara color={'brand.800'} fontSize={'14px'}>
@@ -775,7 +823,7 @@ export default function Index() {
                                 mb={'0'}
                                 fontSize={'18px'}
                               >
-                               {item?.firstname}
+                                {item?.firstname}
                               </CustomHeading>
                             </Box>
                           </Stack>

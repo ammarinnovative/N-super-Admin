@@ -104,9 +104,9 @@ export default function BarOwner() {
                             justifyContent={'space-between'}
                             alignItems={'center'}
                           >
-                            {item?.upload_coverPhoto ? (
+                            {item?.upload_logo ? (
                               <Box>
-                                <Image src={imgUrl + item?.upload_coverPhoto} />
+                                <Image width={"50px"} borderRadius={"50%"} height={"50px"} src={imgUrl + item?.upload_logo} />
                               </Box>
                             ) : (
                               <Box>
@@ -124,13 +124,11 @@ export default function BarOwner() {
                                 {item?.barName ?? 'Infinity Night Club'}
                               </CustomHeading>
                               <CustomPara color={'brand.800'} fontSize={'14px'}>
-                                {item?.city??"testing"}
+                                {item?.city ?? 'testing'}
                               </CustomPara>
                             </Box>
                           </Stack>
-                          <Box>
-                          {/* <MyRatingComponent /> */}
-                          </Box>
+                          <Box>{/* <MyRatingComponent /> */}</Box>
                         </Stack>
 
                         <Box>
@@ -144,102 +142,64 @@ export default function BarOwner() {
                               Most Popular Products{' '}
                             </CustomHeading>
                           </Flex>
-
-                          <Stack
-                            direction={'row'}
-                            flexWrap={'wrap'}
-                            gap={'4'}
-                            justifyContent={'space-between'}
-                            alignItems={'center'}
-                            mt={'10px'}
-                          >
-                            <Stack
-                              direction={'row'}
-                              flexWrap={'wrap'}
-                              gap={'4'}
-                              justifyContent={'space-between'}
-                              alignItems={'center'}
-                            >
-                              <Box>
-                                <Img src={menu1} w={'80px'} h={'80px'} />
-                              </Box>
-                              <Box>
-                                <CustomHeading
-                                  textAlign={'left'}
-                                  color={'#fff'}
-                                  mb={'0'}
-                                  fontSize={'18px'}
+                          {item?.topMenus && item?.topMenus?.length > 0 ? (
+                            item?.topMenus?.map(val => {
+                              console.log(val);
+                              return (
+                                <Stack
+                                  direction={'row'}
+                                  flexWrap={'wrap'}
+                                  key={val?._id}
+                                  gap={'4'}
+                                  justifyContent={'space-between'}
+                                  alignItems={'center'}
+                                  mt={'10px'}
                                 >
-                                  Tito's Handmade Vodka
-                                </CustomHeading>
-                                <CustomPara
-                                  color={'brand.800'}
-                                  fontSize={'14px'}
-                                >
-                                  Louisville, KY
-                                </CustomPara>
-                              </Box>
-                            </Stack>
-                            <Box>
-                              <CustomHeading
-                                textAlign={'left'}
-                                color={'#dc0b9b'}
-                                mb={'0'}
-                                fontSize={'21px'}
-                              >
-                                $49.00
-                              </CustomHeading>
-                            </Box>
-                          </Stack>
-
-                          <Stack
-                            direction={'row'}
-                            flexWrap={'wrap'}
-                            gap={'4'}
-                            justifyContent={'space-between'}
-                            alignItems={'center'}
-                            mt={'10px'}
-                            mb={'10px'}
-                          >
-                            <Stack
-                              direction={'row'}
-                              flexWrap={'wrap'}
-                              gap={'4'}
-                              justifyContent={'space-between'}
-                              alignItems={'center'}
-                            >
-                              <Box>
-                                <Img src={menu1} w={'80px'} h={'80px'} />
-                              </Box>
-                              <Box>
-                                <CustomHeading
-                                  textAlign={'left'}
-                                  color={'#fff'}
-                                  mb={'0'}
-                                  fontSize={'18px'}
-                                >
-                                  Tito's Handmade Vodka
-                                </CustomHeading>
-                                <CustomPara
-                                  color={'brand.800'}
-                                  fontSize={'14px'}
-                                >
-                                  Louisville, KY
-                                </CustomPara>
-                              </Box>
-                            </Stack>
-                            <Box>
-                              <CustomHeading
-                                textAlign={'left'}
-                                color={'#dc0b9b'}
-                                mb={'0'}
-                                fontSize={'21px'}
-                              >
-                                $49.00
-                              </CustomHeading>
-                            </Box>
-                          </Stack>
-
+                                  <Stack
+                                    direction={'row'}
+                                    flexWrap={'wrap'}
+                                    gap={'4'}
+                                    justifyContent={'space-between'}
+                                    alignItems={'center'}
+                                  >
+                                    <Box>
+                                      <Img src={imgUrl+val?.pictures[0]} w={'80px'} h={'80px'} />
+                                    </Box>
+                                    <Box>
+                                      <CustomHeading
+                                        textAlign={'left'}
+                                        color={'#fff'}
+                                        mb={'0'}
+                                        fontSize={'18px'}
+                                      >
+                                        {val?.name??"No Name"}
+                                      </CustomHeading>
+                                      <CustomPara
+                                        color={'brand.800'}
+                                        fontSize={'14px'}
+                                      >
+                                        Louisville, KY
+                                      </CustomPara>
+                                    </Box>
+                                  </Stack>
+                                  <Box>
+                                    <CustomHeading
+                                      textAlign={'left'}
+                                      color={'#dc0b9b'}
+                                      mb={'0'}
+                                      fontSize={'21px'}
+                                    >
+                                      {`${val?.min}-${val?.max}$`}
+                                    </CustomHeading>
+                                  </Box>
+                                </Stack>
+                              );
+                            })
+                          ) : (
+                            <Text fontSize={'18px'} color={'white'}>
+                              No Data Found
+                            </Text>
+                          )}
                           <BorderButton
                             w={'full'}
                             Url={`/dashboard/barownerdetails/${item?._id}`}
