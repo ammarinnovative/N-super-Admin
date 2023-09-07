@@ -202,8 +202,8 @@ export default function Index() {
                   <Box>
                     <BorderButton
                       w={'full'}
-                      Url={'/dashboard/analytics'}
-                      Btnctn={'View Analytics'}
+                      Url={`/dashboard/analytics/${params.id}`}
+                      Btnctn={`View Analytics`}
                     />
                   </Box>
                   <Box>

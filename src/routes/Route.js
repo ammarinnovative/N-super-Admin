@@ -92,7 +92,7 @@ export default function AppRoute() {
                     <Route exact path="/dashboard/Users/usersdetails" element={<UserDetails />}></Route>
                     <Route exact path="/dashboard/event" element={<Event />}></Route>
                     <Route exact path="/dashboard/feed" element={<Feed />}></Route>
-                    <Route exact path="/dashboard/analytics" element={<Analytics />}></Route>
+                    <Route exact path="/dashboard/analytics/:id" element={<Analytics />}></Route>
                     <Route exact path="/dashboard/promotions" element={<Promotions />}></Route>
                     <Route exact path="/dashboard/setting" element={<Profilesetting />}></Route>
                     <Route exact path="/dashboard/teammembers" element={<TeamMembers />}></Route>
