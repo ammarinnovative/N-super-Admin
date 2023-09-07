@@ -478,7 +478,7 @@ export default function Index() {
                               alignItems={'center'}
                               display={'flex'}
                             >
-                              <Box w={'25px'} h={'25px'}>
+                              <Box w={'30px'} h={'30px'}>
                                 <Image
                                   w={'100%'}
                                   src={imgUrl + item?.picture}

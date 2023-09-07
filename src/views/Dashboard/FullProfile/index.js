@@ -219,7 +219,7 @@ export default function Index() {
                         <MenuItem>
                           <Link
                             as={ReactLink}
-                            to={'/dashboard/accountinfo'}
+                            to={`/dashboard/accountinfo/${params.id}`}
                             color={'#fff'}
                           >
                             Account Info
