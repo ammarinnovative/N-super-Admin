@@ -42,6 +42,7 @@ import Profilesetting from '../views/Dashboard/Profilesetting/index.js'
 import AddNewMenu from '../views/Dashboard/AddNewMenu/index.js'
 import { useEffect } from 'react';
 import Addevents from '../views/Dashboard/Event/Addevents';
+import OrderDetails from '../views/Dashboard/OrderDetails/index.js';
 
 
 
@@ -99,6 +100,7 @@ export default function AppRoute() {
                     <Route exact path="/dashboard/barownerdetails/:id" element={<FullProfile />}></Route>
                     <Route exact path="/dashboard/accountinfo" element={<AccountInfo />}></Route>
                     <Route exact path="/dashboard/barowner" element={<Barowner />}></Route>
+                    <Route exact path="/dashboard/orderdetails" element={<OrderDetails />}></Route>
 
                     {/* Dashboard-Routes */}
                     <Route exact path="*" element={<NotFound />}></Route>

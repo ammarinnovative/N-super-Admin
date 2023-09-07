@@ -26,93 +26,139 @@ export default function Index() {
               >
                 <Box
                   bg={'#272727'}
-                  p={'28px 40px'}
+                  p={'28px 18px'}
                   borderRadius={'11px'}
                   textAlign={'left'}
+                  w={'285px'}
+                  minHeight={'144px'}
                 >
                   <CustomHeading
                     fontSize={'18px'}
-                    color={'#fff'}
+                    color={'#dc0a9b'}
                     textAlign={'left'}
                     mb={'20px'}
                   >
                     Total Revenue
                   </CustomHeading>
-                  <CustomPara marginBottom={'0'} textAlign={'center'} fontSize={'40px'}>
+                  <CustomPara marginBottom={'0'} fontSize={'40px'} textAlign={'left'}>
                     $10,214
                   </CustomPara>
                 </Box>
                 <Box
                   bg={'#272727'}
-                  p={'28px 40px'}
+                  p={'28px 18px'}
                   borderRadius={'11px'}
                   textAlign={'left'}
+                  w={'285px'}
+                  minHeight={'144px'}
                 >
                   <CustomHeading
                     fontSize={'18px'}
-                    color={'#fff'}
+                    color={'#dc0a9b'}
                     textAlign={'left'}
                     mb={'20px'}
                   >
-                    Total Revenue
+                    Total Sales
                   </CustomHeading>
-                  <CustomPara marginBottom={'0'} textAlign={'center'} fontSize={'40px'}>
+                  <CustomPara marginBottom={'0'} fontSize={'40px'} textAlign={'left'}>
                     $10,214
                   </CustomPara>
                 </Box>
                 <Box
                   bg={'#272727'}
-                  p={'28px 40px'}
+                  p={'28px 18px'}
                   borderRadius={'11px'}
                   textAlign={'left'}
+                  w={'285px'}
+                  minHeight={'144px'}
                 >
                   <CustomHeading
                     fontSize={'18px'}
-                    color={'#fff'}
+                    color={'#dc0a9b'}
                     textAlign={'left'}
                     mb={'20px'}
                   >
-                    Total Revenue
+                    Total Orders
                   </CustomHeading>
-                  <CustomPara marginBottom={'0'} textAlign={'center'} fontSize={'40px'}>
-                    $10,214
-                  </CustomPara>
+                  <Stack
+                    direction={'row'}
+                    flexWrap={'wrap'}
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                  >
+                    <Box>
+                      <CustomPara marginBottom={'0'} fontSize={'40px'} textAlign={'left'}>
+                        121
+                      </CustomPara>
+                    </Box>
+                    <Box>
+                      <BorderButton w={'full'}  Url={'/dashboard/orderdetails'} Btnctn={'View Orders'} />
+                    </Box>
+                  </Stack>
                 </Box>
                 <Box
                   bg={'#272727'}
-                  p={'28px 40px'}
+                  p={'28px 18px'}
                   borderRadius={'11px'}
                   textAlign={'left'}
+                  w={'285px'}
+                  minHeight={'144px'}
                 >
                   <CustomHeading
                     fontSize={'18px'}
-                    color={'#fff'}
+                    color={'#dc0a9b'}
                     textAlign={'left'}
                     mb={'20px'}
                   >
-                    Total Revenue
+                    Total Canceled Orders
                   </CustomHeading>
-                  <CustomPara marginBottom={'0'} textAlign={'center'} fontSize={'40px'}>
-                    $10,214
-                  </CustomPara>
+                  <Stack
+                    direction={'row'}
+                    flexWrap={'wrap'}
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                  >
+                    <Box>
+                      <CustomPara marginBottom={'0'} fontSize={'40px'} textAlign={'left'}>
+                        121
+                      </CustomPara>
+                    </Box>
+                    <Box>
+                      <BorderButton w={'full'}  Url={'./'} Btnctn={'View Orders'} />
+                    </Box>
+                  </Stack>
+                  
                 </Box>
                 <Box
                   bg={'#272727'}
-                  p={'28px 40px'}
+                  p={'28px 18px'}
                   borderRadius={'11px'}
                   textAlign={'left'}
+                  w={'285px'}
                 >
                   <CustomHeading
                     fontSize={'18px'}
-                    color={'#fff'}
+                    color={'#dc0a9b'}
                     textAlign={'left'}
                     mb={'20px'}
                   >
-                    Total Revenue
+                    Nightly Overview Report
                   </CustomHeading>
-                  <CustomPara marginBottom={'0'} textAlign={'center'} fontSize={'40px'}>
-                    $10,214
-                  </CustomPara>
+                  <Stack
+                    direction={'row'}
+                    flexWrap={'wrap'}
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                  >
+                    <Box>
+                      <CustomPara marginBottom={'0'} fontSize={'40px'} textAlign={'left'}>
+                        121
+                      </CustomPara>
+                    </Box>
+                    <Box>
+                      <BorderButton w={'full'}  Url={'./'} Btnctn={'Generate Reports'} />
+                    </Box>
+                  </Stack>
                 </Box>
               </Stack>
                 
