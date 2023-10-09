@@ -76,9 +76,9 @@ export default function Index() {
       }
 
       var response = await POST('users/login', Fields);
-      console.log('response', response.data);
+      console.log('response', response);
       dispatch(loadUser(response.data));
-      if (response.status === 'success') {
+      if (response.status === '200') {
         if (remember) {
           localStorage.setItem('userCreds', JSON.stringify(Fields));
         }
@@ -89,10 +89,10 @@ export default function Index() {
 
       toast({
         description: response.message,
-        status: response.status,
+        status: "success",
         isClosable: true,
         position: 'bottom-left',
-        duration: 2500,
+        duration: 5000,
       });
 
       setFields({

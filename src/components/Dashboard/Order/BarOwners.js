@@ -36,7 +36,7 @@ export default function BarOwners({ data }) {
             Register bar Owners
           </CustomHeading>
           <Box>
-            <BorderButton Url={'/dashboard/'} Btnctn={'See All'} />
+            <BorderButton Url={'/dashboard/barowner'} Btnctn={'See All'} />
           </Box>
         </Stack>
         <Box bg={'#212121'} p={'4'}>
@@ -56,7 +56,7 @@ export default function BarOwners({ data }) {
                 >
                   <Box color={'#fff'}>
                     {
-                      item?.upload_document? <Image src={imgUrl+item?.upload_document} />: <Image src={Ownerprofile} />
+                      item?.upload_document? <Image src={imgUrl+item?.upload_document} />: <Image w={'75px'} h={'75px'} src={Ownerprofile} />
                     }
                   </Box>
                   <Box color={'#fff'}>
@@ -64,7 +64,7 @@ export default function BarOwners({ data }) {
                     <Text opacity={'0.4'}>{item?.address}</Text>
                   </Box>
                   <Box color={'#fff'}>
-                    <BorderButton Url={'/'} Btnctn={'See Profile'} />
+                    <BorderButton Url={`/dashboard/barownerdetails/${item?._id}`} Btnctn={'See Profile'} />
                   </Box>
                 </Stack>
               );
