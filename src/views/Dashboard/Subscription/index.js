@@ -11,6 +11,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Text,
   ModalOverlay,
   Input,
   useDisclosure,
@@ -118,7 +119,7 @@ export default function Index() {
               </CustomHeading>
             </Box>
             <Box>
-            {/* <Button
+            <Button
               bg={'transparent'}
               textAlign={'center'}
               margin={'auto'}
@@ -137,7 +138,7 @@ export default function Index() {
               }}
           >
               Create New Subscription
-          </Button> */}
+          </Button>
             </Box>
 
           </Stack>

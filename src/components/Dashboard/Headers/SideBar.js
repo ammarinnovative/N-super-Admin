@@ -54,6 +54,7 @@ const LinkItems = [
   // { name: 'Analytics', icon: FiTrendingUp,url:'/dashboard/analytics' },
   // { name: 'promotions', icon: FiCompass,url : '/dashboard/promotions' },
   { name: 'Settings', icon: FiStar,url:'/dashboard/setting' },
+  { name: 'Drink Table', icon: FiStar,url:'/dashboard/drinktable' },
   // { name: 'Team Members', icon: FiSettings ,url:'/dashboard/teammembers' },
   // { name: 'Contact Us', icon: FiSettings,url:'/dashboard/Contact' },
 ];
