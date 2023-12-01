@@ -362,7 +362,8 @@ export default function Index() {
                             <Flex gap={'6'} alignItems={'center'}>
                               <Box width={'50%'}>
                                 <Image
-                                  width={'100%'}
+                                  w={'75px'}
+                                  h={'75px'}
                                   src={imgUrl + item?.category_image}
                                 />
                               </Box>

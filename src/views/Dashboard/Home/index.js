@@ -116,7 +116,7 @@ export default function Index() {
                   </CustomHeading>
                 </Box>
                 <Box display={'inline-block'} w={'19%'}>
-                  <BorderButton Url={'/'} flex="1" Btnctn={'View All Menu'} />
+                  <BorderButton Url={'/dashboard/menu'} flex="1" Btnctn={'View All Menu'} />
                 </Box>
               </Flex>
             </Box>

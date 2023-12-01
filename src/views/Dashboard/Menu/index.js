@@ -171,7 +171,7 @@ export default function Menu() {
                 data?.map(item => {
                   return (
                     <Box key={item?._id} w={'339px'}>
-                      <Img src={imgUrl+item?.pictures[0]} />
+                      <Img h={'400px'} w={'100%'} src={imgUrl+item?.pictures[0]} />
                       <Stack p={'3'} bg={'dashbg.100'}>
                         <CustomHeading
                           textAlign={'left'}

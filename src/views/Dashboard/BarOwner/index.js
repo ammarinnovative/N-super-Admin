@@ -131,7 +131,10 @@ export default function BarOwner() {
                           <Box>{/* <MyRatingComponent /> */}</Box>
                         </Stack>
 
-                        <Box>
+                        <Box
+                           overflowY={'scroll'}
+                           h={'200px'}
+                        >
                           <Flex gap={'2'}>
                             <CustomHeading
                               mb={'0'}
@@ -154,6 +157,7 @@ export default function BarOwner() {
                                   justifyContent={'space-between'}
                                   alignItems={'center'}
                                   mt={'10px'}
+                                  mb={'10px'}
                                 >
                                   <Stack
                                     direction={'row'}
