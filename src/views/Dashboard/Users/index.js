@@ -50,6 +50,8 @@ export default function Index() {
       getData();
     }
   }, [user]);
+
+  console.log(data);
   let totalMembers = 0;
   let totalActiveMembers = 0;
   let totalBlockedMembers = 0;

@@ -78,31 +78,41 @@ export default function Index() {
       var response = await POST('users/login', Fields);
       console.log('response', response);
       dispatch(loadUser(response.data));
-      if (response.status === '200') {
+      if (response.status === 200) {
         if (remember) {
           localStorage.setItem('userCreds', JSON.stringify(Fields));
         }
+        localStorage.setItem('user', JSON.stringify(response.data));
+        navigate('/dashboard');
+  
+        toast({
+          description: response.message,
+          status: "success",
+          isClosable: true,
+          position: 'bottom-left',
+          duration: 5000,
+        });
+  
+        setFields({
+          username: '',
+          password: '',
+        });
+  
+        setisLoading(false);  
+      }else{
+        alert("work")
+        toast({
+          description: response.message,
+          status: "error",
+          isClosable: true,
+          position: 'bottom-left',
+          duration: 5000,
+        });
+        setisLoading(false);  
+        return;
       }
-
-      localStorage.setItem('user', JSON.stringify(response.data));
-      navigate('/dashboard');
-
-      toast({
-        description: response.message,
-        status: "success",
-        isClosable: true,
-        position: 'bottom-left',
-        duration: 5000,
-      });
-
-      setFields({
-        username: '',
-        password: '',
-      });
-
-      setisLoading(false);
+      
     } catch (err) {
-      console.log(err);
       toast({
         description: 'Something went wrong!',
         status: 'error',

@@ -7,6 +7,7 @@ import {
   ListItem,
   Stack,
   UnorderedList,
+  selector,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -29,6 +30,7 @@ export default function Planwarp() {
 
   const toast = useToast();
   const user = useSelector(state => state?.value);
+  console.log("user",selector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -38,26 +40,25 @@ export default function Planwarp() {
   // let user = localStorage.getItem('user');
   // user = JSON.parse(user);
 
-  useEffect(() => {
-    console.log(user);
-    if(user) getUserData();
-  }, [user]);
+  
+
+  console.log("packages",packages);
 
   // useEffect(()=>{
   //   Selectmambership();
   // },[state])
-
   const getUserData = async () => {
+
     setIsLoading(true);
     let response = await GET(`membership/?limit=10&page=1`, {
       authorization: `Bearer ${user?.verificationToken}`,
     });
-    console.log(response);
+    console.log("da",response);
     setpackages(response.data);
   };
 
   const Selectmambership = async id => {
-    console.log("id=>",id);
+
     let response = await POST(
       `users/selectMembership`,
       {
@@ -66,32 +67,36 @@ export default function Planwarp() {
       { authorization: `Bearer ${user?.verificationToken}` }
     );
     setState(state+1);
-    toast({
-      description: response.message,
-      status: response.status,
-      isClosable: true,
-      position: 'bottom-left',
-      duration: 2500,
-    });
-    if (response.status === 'success') {
+    
+    console.log();
+    console.log(response);
+    if (response.status === 200) {
       
-      // update user credentials
-
-      // let user = JSON.parse(localStorage.getItem("user"));
-      // user.barInfo = response.data.barInfo
-
-
-      // localStorage.setItem('user',user);
-
       console.log(response.data.barInfo);
-
-
+      toast({
+        description:response.message,
+        status:"success",
+        isClosable:true,
+        position: 'bottom-left',
+        duration: 5000,
+      });
       dispatch(updateBarInfo(response.data.barInfo));
       navigate('/dashboard/equipment');
     } else {
       navigate('/dashboard/Plan');
+      toast({
+        description: response.message,
+        status:"error",
+        isClosable: true,
+        position: 'bottom-left',
+        duration: 2500,
+      });
     }
   };
+
+  useEffect(() => {
+    if(user) getUserData();
+  }, [user]);
 
   return (
     <>
