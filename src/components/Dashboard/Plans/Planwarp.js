@@ -7,6 +7,7 @@ import {
   ListItem,
   Stack,
   UnorderedList,
+  selector,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
@@ -29,6 +30,7 @@ export default function Planwarp() {
 
   const toast = useToast();
   const user = useSelector(state => state?.value);
+  console.log("user",selector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +53,7 @@ export default function Planwarp() {
     let response = await GET(`membership/?limit=10&page=1`, {
       authorization: `Bearer ${user?.verificationToken}`,
     });
+    console.log("da",response);
     setpackages(response.data);
   };
 

@@ -34,16 +34,22 @@ const signupstyle = {
   color: '#fff',
 };
 
-export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
+export default function OrderSalesCharts({fields,setDatas,datas, getSubCatId, token ,setFields,}) {
   const toast = useToast();
   const [data, setData] = useState([]);
+  const [checkId,setCheckId] = useState(null);
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  const [selectedTertiaryOption, setSelectedTertiaryOption] = useState({});
+  const [selectedTertiaryCheckbox, setSelectedTertiaryCheckbox] = useState(null);
+  const [id,setID] = useState(null);
+  console.log("data",data)
   const [cat, setCat] = useState({
     name: '',
     description: '',
     category_image: '',
     parent: '',
   });
-
+  console.log("checkId",checkId);
   const OverlayOne = () => (
     <ModalOverlay
       bg="blackAlpha.300"
@@ -53,6 +59,7 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
   const getData = async () => {
     const res = await GET('admin/category');
     setData(res?.data);
+    console.log("res",res);
   };
   useEffect(() => {
     getData();
@@ -84,7 +91,18 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
     console.log(e);
   };
 
-  console.log(cat);
+
+  // INHERITED CHILD STATE
+
+
+  // USE this state for youtfuther process this inherited has the data from parents and freedom to add new entites.
+  // can you carry on from here?
+const [inheritedData, setInheritedData] = useState({});
+
+useEffect(() => {
+  setInheritedData(fields);
+}, [fields])
+  
 
   const submitCat = async () => {
     const formdata = new FormData();
@@ -134,6 +152,50 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
     }
   };
 
+
+  const handleParentCategoryClick = (parentCategory) => {
+    const selectedId = parentCategory;
+  
+    // Update the fields state if the category is selected
+    if (selectedId !== datas.parent) {
+      setDatas((prevState) => ({
+        ...prevState,
+        parent: selectedId,
+      }));
+    } else {
+      
+      setDatas((prevState) => ({
+        ...prevState,
+        parent: null,
+      }));
+    }
+  };
+
+
+  const myCheck = (id)=>{
+   if(id !== datas.subcategory ){
+    setDatas((pre)=>(
+      {...pre,subcategory:id}
+    ))
+   }else{
+    setDatas((pre)=>(
+      {...pre,subcategory:null}
+    ))
+   }
+  }
+
+
+  const tertiaryCheck = (id)=>{
+    if(id !== datas.tertiary){
+      setDatas((pre)=>(
+        {...pre,tertiary:id}
+      ))
+    }else{
+      setDatas((pre)=>(
+        {...pre,tertiary:null}
+      ))
+    }
+  }
   return (
     <>
       {/* Add Category Modal Starts */}
@@ -469,13 +531,14 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
           data?.map(item => {
             return (
               <Stack
-                border={'solid 1px #fff'}
+                border={item._id == id?'solid 1px pink':'solid 1px #fff'}
                 p={'20px 10px'}
                 cursor={'pointer'}
                 mt={'18px'}
+                // display={item._id == id?"block":"none"}
                 borderRadius={'10px'}
-                onClick={() => {
-                  getMenuData(item._id);
+                onClick={() => {                  setID(item._id);
+                  handleParentCategoryClick(item._id);
                 }}
               >
                 <Stack
@@ -501,6 +564,7 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
                       border={'1px solid #fff'}
                       borderRadius={'6px'}
                       color={'#fff'}
+                      disabled={item._id !== id}
                       ml={'4px'}
                       onClick={() => {
                         setOverlay(<OverlayOne />);
@@ -520,6 +584,7 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
                       py={'5px'}
                       px={'8'}
                       w={'10px'}
+                      disabled={item._id !== id}
                       lineHeight={'inherit'}
                       border={'1px solid #fff'}
                       borderRadius={'6px'}
@@ -541,6 +606,7 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
                       py={'5px'}
                       px={'8'}
                       lineHeight={'inherit'}
+                      disabled={item._id !== id}
                       border={'1px solid #fff'}
                       borderRadius={'6px'}
                       color={'#fff'}
@@ -566,30 +632,62 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
                   justifyContent={'space-between'}
                   p={'0px 35px'}
                 >
-                  <CheckboxGroup
-                    onChange={e => {
-                      getSubCatId(e);
-                    }}
-                  >
-                    <Box lineHeight={'30px'}>
-                      {item?.subcategories?.length > 0 ? (
-                        item?.subcategories?.map(value => {
-                          return (
-                            <>
-                              <Checkbox value={value?._id} color={'#fff'}>
-                                {value?.name}
-                              </Checkbox>
-                              <br />
-                            </>
-                          );
-                        })
-                      ) : (
-                        <Text fontSize={'18px'} color={'white'}>
-                          No Data Found
-                        </Text>
-                      )}
-                    </Box>
-                  </CheckboxGroup>
+<CheckboxGroup onChange={e => {}}>
+  <Box>
+    {item?.subcategories?.length > 0 ? (
+      item?.subcategories?.map(primaryCategory => {
+        return (
+          <Box key={primaryCategory._id} lineHeight={'30px'}>
+            <Checkbox
+              onChange={() => {
+                setSelectedCheckbox(selectedCheckbox === primaryCategory._id ? null : primaryCategory._id);
+                setSelectedTertiaryOption(null);
+              myCheck(primaryCategory._id); 
+              }}
+              value={primaryCategory?._id}
+              color={'#fff'}
+              defaultChecked={selectedCheckbox === primaryCategory._id}
+              disabled={selectedCheckbox !== null && selectedCheckbox !== primaryCategory._id}
+              style={{ display: 'inline-block' }}
+            >
+              {primaryCategory?.name}
+            </Checkbox>
+            {/* Display tertiary data below the selected primary category */}
+            {selectedCheckbox === primaryCategory._id &&
+              primaryCategory.tertiary &&
+              primaryCategory.tertiary.map(tertiaryItem => {
+                return (
+                  <Box key={tertiaryItem._id} lineHeight={'30px'} marginLeft={'20px'}>
+                    <Checkbox
+                      onChange={() => {
+                        setSelectedTertiaryOption(tertiaryItem._id);
+                        tertiaryCheck(tertiaryItem._id);
+                      }}
+                      value={tertiaryItem._id}
+                      color={'#fff'}
+                      defaultChecked={selectedTertiaryOption === tertiaryItem._id}
+                      disabled={selectedTertiaryOption !== null && selectedTertiaryOption !== tertiaryItem._id}
+                      style={{ display: 'inline-block' }}
+                    >
+                      {tertiaryItem?.name}
+                    </Checkbox>
+                  </Box>
+                );
+              })}
+          </Box>
+        );
+      })
+    ) : (
+      <Text fontSize={'18px'} color={'white'}>
+        No Data Found
+      </Text>
+    )}
+  </Box>
+</CheckboxGroup>
+
+
+
+
                 </Stack>
                 <Stack>
                   <Button
@@ -601,6 +699,7 @@ export default function OrderSalesCharts({ getMenuData, getSubCatId, token }) {
                     w={'100%'}
                     lineHeight={'inherit'}
                     border={'1px solid #fff'}
+                    disabled={item._id !== id}
                     borderRadius={'6px'}
                     color={'#fff'}
                     _hover={{

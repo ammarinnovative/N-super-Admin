@@ -24,19 +24,30 @@ export default function Menu() {
   const [fields, setFields] = useState({
     menu_name: '',
     description: '',
-    categories: [{ parent: '', child: [] }],
     pictures: '',
+    parent:null,
+    subcategory:null,
+    tertiary:null
+  });
+  const [data, setData] = useState({
+    menu_name: '',
+    description: '',
+    pictures: [], 
+    parent:null,
+    subcategory:null,
+    tertiary:null
   });
   const [user, setUser] = useState('');
+  console.log("mydata",data);
 
   const submitData = async () => {
-    const find = document.getElementById('data');
-
-    const formData = new FormData(find);
-    formData.append('menu_name', fields.menu_name);
-    formData.append('description', fields.description);
-    formData.append('categories', JSON.stringify(fields.categories));
-
+    const formData = new FormData();
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        formData.append(key, data[key]);
+      }
+    }
+  
     try {
       const res = await POST('admin/menu', formData, {
         authorization: `bearer ${user?.verificationToken}`,
@@ -71,30 +82,9 @@ export default function Menu() {
     }
   };
 
-  const getMenuData = res => {
-    setFields({
-      ...fields,
-      categories: [{ parent: res, child: [] }],
-    });
-  };
 
-  // let tempArr = [];
 
-  const getSubCatId = res => {
-    setFields({
-      ...fields,
-      categories: [
-        {
-          parents: fields.categories[0]['parent'],
-          child: res,
-        },
-      ],
-    });
-  };
 
-  // const getCat = async ()=>{
-  //   const res = await POST("");
-  // }
 
 
   const selector = useSelector(state => state);
@@ -141,9 +131,8 @@ export default function Menu() {
                     fontSize={'14px'}
                     border={'1px solid #fff !important'}
                     borderRadius={'10px'}
-                    onChange={e => {
-                      setFields({ ...fields, menu_name: e.target.value });
-                    }}
+                    value={data.menu_name}
+                    onChange={(e)=>{setData({...data,menu_name:e.target.value})}}
                     fontWeight={500}
                     color={'#fff !important'}
                     _focus={{
@@ -159,10 +148,9 @@ export default function Menu() {
                     color={'#fff'}
                     borderRadius={'10px'}
                     height={'100px'}
+                    value={data.description}
                     placeholder={'Description'}
-                    onChange={e => {
-                      setFields({ ...fields, description: e.target.value });
-                    }}
+                    onChange={(e)=>{setData({...data,description:e.target.value})}}
                     fontSize={'14px'}
                     border={'1px solid #fff !important'}
                     fontWeight={500}
@@ -175,23 +163,26 @@ export default function Menu() {
                     _placeholder={{ color: '#fff' }}
                   ></Textarea>
                   <form id="data">
-                    <Input
-                      color={'white'}
-                      name=""
-                      onChange={e => {
-                        setFields({ ...fields, pictures: e.target.files[0] });
-                      }}
-                      borderColor="white"
-                      border={'1px solid white'}
-                      type="file"
-                    />
+                  <Input
+          color={'white'}
+          name=""
+          onChange={(e) => {
+            const filesArray = Array.from(e.target.files);
+            console.log(filesArray);
+            setData({ ...data, pictures: filesArray });
+          }}
+          borderColor="white"
+          border={'1px solid white'}
+          type="file"
+          multiple 
+        />
                   </form>
                 </Box>
               </Stack>
             </Box>
             <Button onClick={submitData}>sub</Button>
 
-            <CategoryMenu getSubCatId={getSubCatId} token={user?.verificationToken} getMenuData={getMenuData} />
+            <CategoryMenu  fields={fields} setDatas={setData} datas={data} setFields={setFields} token={user?.verificationToken} />
           </Stack>
           {/* Second Div Ends */}
         </Stack>
