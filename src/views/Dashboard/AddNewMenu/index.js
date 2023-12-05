@@ -24,7 +24,7 @@ export default function Menu() {
   const [fields, setFields] = useState({
     menu_name: '',
     description: '',
-    pictures: '',
+    // pictures: '',
     parent:null,
     subcategory:null,
     tertiary:null
@@ -32,7 +32,7 @@ export default function Menu() {
   const [data, setData] = useState({
     menu_name: '',
     description: '',
-    pictures: [], 
+    pictures: null, 
     parent:null,
     subcategory:null,
     tertiary:null
@@ -51,9 +51,8 @@ export default function Menu() {
     try {
       const res = await POST('admin/menu', formData, {
         authorization: `bearer ${user?.verificationToken}`,
-      });
-      console.log(res);
-      if (res.message == "success") {
+      });      
+      if (res?.message == "success") {
         toast({
           position: 'bottom-left',
           isClosable: true,
@@ -61,7 +60,6 @@ export default function Menu() {
           description: 'Success',
           status: 'success',
         });
-        onclose();
       } else {
         toast({
           position: 'bottom-left',
@@ -167,9 +165,7 @@ export default function Menu() {
           color={'white'}
           name=""
           onChange={(e) => {
-            const filesArray = Array.from(e.target.files);
-            console.log(filesArray);
-            setData({ ...data, pictures: filesArray });
+            setData({ ...data, pictures:e.target.files[0]});
           }}
           borderColor="white"
           border={'1px solid white'}
