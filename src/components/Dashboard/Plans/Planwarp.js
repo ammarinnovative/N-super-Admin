@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateBarInfo } from '../../../reducers/useReducers';
 
 
-export default function Planwarp() {
+export default function Planwarp({getData}) {
 
   
 
@@ -41,9 +41,6 @@ export default function Planwarp() {
   // user = JSON.parse(user);
 
   
-
-  console.log("packages",packages);
-
   // useEffect(()=>{
   //   Selectmambership();
   // },[state])
@@ -175,11 +172,9 @@ export default function Planwarp() {
                     _hover={{
                       bg: '#000',
                     }}
-                    onClick={() => {
-                      Selectmambership(v._id);
-                    }}
+                    onClick={()=>{getData(v)}}
                   >
-                    Get Started
+                    Update
                   </Button>
                 </Stack>
               </Box>
