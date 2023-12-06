@@ -72,6 +72,7 @@ export default function AppRoute() {
 
                     {/* Dashboard-Routes */}
                     <Route exact path="/dashboard/signup" element={<Signup />}></Route>
+                    <Route exact path="/" element={<Login />}></Route>
                     <Route exact path="/dashboard/login" element={<Login />}></Route>
                     <Route exact path="/dashboard/forgot" element={<Forgot />}></Route>
                     <Route exact path="/dashboard/addnewmenu" element={<AddNewMenu />}></Route>

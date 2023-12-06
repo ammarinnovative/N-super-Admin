@@ -13,6 +13,7 @@ import {
   Td,
   Text,
   Tr,
+  useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 import MainDashboard from '../MainDashboard';
@@ -23,7 +24,7 @@ import BorderButton from '../../../components/Website/Buttons/BorderButton';
 import { useState } from 'react';
 import Pagination from "../../../components/Dashboard/Pagination/Pagination";
 import { useEffect } from 'react';
-import { GET } from '../../../utilities/ApiProvider';
+import { GET, PUT } from '../../../utilities/ApiProvider';
 import { Global } from '@emotion/react';
 
 export default function Index() {
@@ -31,6 +32,7 @@ export default function Index() {
   const [data, setData] = useState([]);
   const [val, setVal] = useState('team');
   const selector = useSelector(state => state);
+const toast = useToast();
 
   useEffect(() => {
     if (selector) {
@@ -42,6 +44,7 @@ export default function Index() {
     const res = await GET('admin/users', {
       authorization: `bearer ${user?.verificationToken}`,
     });
+    console.log(res)
     setData(res?.data);
   };
 
@@ -72,6 +75,28 @@ export default function Index() {
       },
     }}
   />;
+
+  const updateStatus = async (id, status) => {
+    // http://164.92.90.235:3000/api/
+    let response;
+    if (status) {
+      response = await PUT(`admin/bar/${id}/suspend`, {
+        "suspend": false
+      })
+    } else {
+      response = await PUT(`admin/bar/${id}/suspend`, {
+        "suspend": true
+      })
+    }
+    getData();
+    toast({
+      description: response?.message,
+      status: response?.status === 200 ? 'success' : 'error',
+      isClosable: true,
+      position: 'bottom-left',
+      duration: '3000'
+    })
+  }
 
   return (
     <>
@@ -187,7 +212,7 @@ export default function Index() {
                   <Table variant="simple">
                     <Tbody>
                       {data?.activeMembers &&
-                      data?.activeMembers?.length > 0 ? (
+                        data?.activeMembers?.length > 0 ? (
                         data?.activeMembers?.map(item => {
                           return (
                             <Tr key={item?._id}>
@@ -203,6 +228,9 @@ export default function Index() {
                                   flex="1"
                                   Btnctn={'View Details'}
                                 />
+                              </Td>
+                              <Td>
+                                <Button onClick={() => updateStatus(item?._id, true)}>Active</Button>
                               </Td>
                             </Tr>
                           );
@@ -231,28 +259,28 @@ export default function Index() {
                   <Table variant="simple">
                     <Tbody>
                       {
-                        data?.blockedMembers && data?.blockedMembers.length>0?data?.blockedMembers.map((item)=>{
-                          return(
+                        data?.blockedMembers && data?.blockedMembers.length > 0 ? data?.blockedMembers.map((item) => {
+                          return (
                             <Tr>
-                        <Td color={'#fff'} opacity={'0.5'}>
-                          Name:{item?.username}
-                        </Td>
-                        <Td color={'#fff'} opacity={'0.5'}>
-                          Email:{item?.email}
-                        </Td>
-                        
-                        <Td>
-                          <BorderButton
-                            Url={'/dashboard/Users/usersdetails'}
-                            flex="1"
-                            Btnctn={'View Details'}
-                          />
-                        </Td>
-                      </Tr>
+                              <Td color={'#fff'} opacity={'0.5'}>
+                                Name:{item?.username}
+                              </Td>
+                              <Td color={'#fff'} opacity={'0.5'}>
+                                Email:{item?.email}
+                              </Td>
+
+                              <Td>
+                                <BorderButton
+                                  Url={'/dashboard/Users/usersdetails'}
+                                  flex="1"
+                                  Btnctn={'View Details'}
+                                />
+                              </Td>
+                            </Tr>
                           )
-                        }):<Text fontSize={"17px"} color={"white"}>No Data Found</Text>
+                        }) : <Text fontSize={"17px"} color={"white"}>No Data Found</Text>
                       }
-                      
+
                     </Tbody>
                   </Table>
                 </TableContainer>

@@ -3,6 +3,7 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  FormLabel,
   Input,
   Link,
   Modal,
@@ -12,6 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Stack,
   Text,
   Textarea,
@@ -34,22 +36,22 @@ const signupstyle = {
   color: '#fff',
 };
 
-export default function OrderSalesCharts({fields,setDatas,datas, getSubCatId, token ,setFields,}) {
+export default function OrderSalesCharts({ fields, setDatas, datas, getSubCatId, token, setFields, }) {
   const toast = useToast();
   const [data, setData] = useState([]);
-  const [checkId,setCheckId] = useState(null);
+  const [checkId, setCheckId] = useState(null);
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
   const [selectedTertiaryOption, setSelectedTertiaryOption] = useState({});
   const [selectedTertiaryCheckbox, setSelectedTertiaryCheckbox] = useState(null);
-  const [id,setID] = useState(null);
-  console.log("data",data)
+  const [id, setID] = useState(null);
+  console.log("data", data)
   const [cat, setCat] = useState({
     name: '',
     description: '',
     category_image: '',
     parent: '',
   });
-  console.log("checkId",checkId);
+  console.log("checkId", checkId);
   const OverlayOne = () => (
     <ModalOverlay
       bg="blackAlpha.300"
@@ -59,7 +61,7 @@ export default function OrderSalesCharts({fields,setDatas,datas, getSubCatId, to
   const getData = async () => {
     const res = await GET('admin/category');
     setData(res?.data);
-    console.log("res",res);
+    console.log("res", res);
   };
   useEffect(() => {
     getData();
@@ -97,12 +99,12 @@ export default function OrderSalesCharts({fields,setDatas,datas, getSubCatId, to
 
   // USE this state for youtfuther process this inherited has the data from parents and freedom to add new entites.
   // can you carry on from here?
-const [inheritedData, setInheritedData] = useState({});
+  const [inheritedData, setInheritedData] = useState({});
 
-useEffect(() => {
-  setInheritedData(fields);
-}, [fields])
-  
+  useEffect(() => {
+    setInheritedData(fields);
+  }, [fields])
+
 
   const submitCat = async () => {
     const formdata = new FormData();
@@ -155,7 +157,7 @@ useEffect(() => {
 
   const handleParentCategoryClick = (parentCategory) => {
     const selectedId = parentCategory;
-  
+
     // Update the fields state if the category is selected
     if (selectedId !== datas.parent) {
       setDatas((prevState) => ({
@@ -163,7 +165,7 @@ useEffect(() => {
         parent: selectedId,
       }));
     } else {
-      
+
       setDatas((prevState) => ({
         ...prevState,
         parent: null,
@@ -172,30 +174,69 @@ useEffect(() => {
   };
 
 
-  const myCheck = (id)=>{
-   if(id !== datas.subcategory ){
-    setDatas((pre)=>(
-      {...pre,subcategory:id}
-    ))
-   }else{
-    setDatas((pre)=>(
-      {...pre,subcategory:null}
-    ))
-   }
-  }
-
-
-  const tertiaryCheck = (id)=>{
-    if(id !== datas.tertiary){
-      setDatas((pre)=>(
-        {...pre,tertiary:id}
+  const myCheck = (id) => {
+    if (id !== datas.subcategory) {
+      setDatas((pre) => (
+        { ...pre, subcategory: id }
       ))
-    }else{
-      setDatas((pre)=>(
-        {...pre,tertiary:null}
+    } else {
+      setDatas((pre) => (
+        { ...pre, subcategory: null }
       ))
     }
   }
+
+
+  const tertiaryCheck = (id) => {
+    if (id !== datas.tertiary) {
+      setDatas((pre) => (
+        { ...pre, tertiary: id }
+      ))
+    } else {
+      setDatas((pre) => (
+        { ...pre, tertiary: null }
+      ))
+    }
+  }
+
+  const submitNewCat = async () => {
+    let form = document.getElementById('newSubCatForm');
+    let data = new FormData(form);
+    try {
+      const res = await POST('admin/category', data, {
+        authorization: `bearer ${token}`,
+      });
+      console.log(res);
+      if (res.status == 'success') {
+        toast({
+          position: 'bottom-left',
+          isClosable: true,
+          description: 'Success',
+          duration: 5000,
+          status: 'success',
+        });
+        onAddSubCategoryClose();
+      } else {
+        toast({
+          position: 'bottom-left',
+          isClosable: true,
+          description: 'Something went wrong',
+          duration: 5000,
+          status: 'error',
+        });
+      }
+    } catch (error) {
+      toast({
+        position: 'bottom-left',
+        isClosable: true,
+        description: error.message,
+        duration: 5000,
+        status: error,
+      });
+    }
+  }
+
+
   return (
     <>
       {/* Add Category Modal Starts */}
@@ -454,42 +495,65 @@ useEffect(() => {
           </ModalHeader>
           <ModalCloseButton color={'#fff'} />
           <ModalBody>
-            <Stack gap={'4'}>
-              <Box
-                position={'relative'}
-                overflow={'hidden'}
-                w={'full'}
-                border={'1px dashed #fff'}
-                py={'8'}
-                textAlign={'center'}
-                borderRadius={'6'}
-              >
-                <Button>Upload a file</Button>
+            <form id="newSubCatForm">
+              <Stack gap={'4'}>
                 <Input
-                  position={'absolute'}
-                  left={'0'}
-                  right={'0'}
-                  bottom={'0'}
-                  top={'0'}
-                  h={'100%'}
-                  cursor={'pointer'}
-                  color={'white'}
-                  py={'34px'}
-                  type={'file'}
-                  name={'file'}
+                  sx={signupstyle}
+                  placeholder={'name'}
+                  type="Name"
+                  name='name'
+                  _placeholder={{ color: '#fff' }}
                 />
-              </Box>
-              <Input
-                sx={signupstyle}
-                placeholder={'Subcategory Name'}
-                type="Name"
-                _placeholder={{ color: '#fff' }}
-              />
-            </Stack>
+                <Input
+                  sx={signupstyle}
+                  placeholder={'description'}
+                  name='description'
+                  type="Name"
+                  _placeholder={{ color: '#fff' }}
+                />
+                <FormLabel color={'white'}>Upload picture</FormLabel>
+                <Box
+                  position={'relative'}
+                  overflow={'hidden'}
+                  w={'full'}
+                  border={'1px dashed #fff'}
+                  py={'8'}
+                  textAlign={'center'}
+                  borderRadius={'6'}
+                >
+                  <Button>Upload a file</Button>
+                  <Input
+                    position={'absolute'}
+                    left={'0'}
+                    right={'0'}
+                    bottom={'0'}
+                    top={'0'}
+                    h={'100%'}
+                    cursor={'pointer'}
+                    color={'white'}
+                    py={'34px'}
+                    type={'file'}
+                    name={'category_image'}
+                  />
+                </Box>
+                <FormLabel color={'white'}>Select Parent Category <sub>(optional)</sub></FormLabel>
+                <Select
+                  name='parent'
+                >
+                  <option style={{ display: 'none' }}></option>
+                  {
+                    data?.length > 0 &&
+                    data?.map(val =>
+                      <option key={val?._id} value={val?._id}>{val?.name}</option>
+                    )
+                  }
+                </Select>
+              </Stack>
+            </form>
           </ModalBody>
           <ModalFooter>
             <Stack direction={'row'} w={'full'} justifyContent={'center'}>
-              <Button bg={'pHeading.100'} color={'#fff'} px={'14'}>
+              <Button onClick={() => submitNewCat()} bg={'pHeading.100'} color={'#fff'} px={'14'}>
                 Continue
               </Button>
               <Button onClick={onAddSubCategoryClose}>Discard</Button>
@@ -501,12 +565,30 @@ useEffect(() => {
 
       <Box w={'39%'} bgColor={'#212121'} p={'25px 25px'} borderRadius={'15px'}>
         <Stack w={'100%'} direction={'row'} justifyContent={'space-between'}>
-          <Box>
+          <Box w={'100%'}>
             <Text color={'#fff'} fontSize={'24px'}>
               Choose Category
             </Text>
           </Box>
-          {/* <Box>
+          <Box>
+            {/* <Button
+              bg={'transparent'}
+              textAlign={'center'}
+              margin={'auto'}
+              py={'10px'}
+              px={'8'}
+              lineHeight={'inherit'}
+              border={'1px solid #fff'}
+              borderRadius={'6px'}
+              color={'#fff'}
+              _hover={{
+                color: 'primaryText.200',
+              }}
+              onClick={() => { onAddCategoryOpen() }}
+              mb={'20px'}
+            >
+              Add New Category
+            </Button> */}
             <Button
               bg={'transparent'}
               textAlign={'center'}
@@ -520,24 +602,25 @@ useEffect(() => {
               _hover={{
                 color: 'primaryText.200',
               }}
-              onClick={() => {}}
+              onClick={() => { onAddSubCategoryOpen() }}
             >
-              Add New Category
+              Add New Sub Category
             </Button>
-          </Box> */}
+          </Box>
         </Stack>
         {data?.length > 0 ? (
           data?.length > 0 &&
           data?.map(item => {
             return (
               <Stack
-                border={item._id == id?'solid 1px pink':'solid 1px #fff'}
+                border={item._id == id ? 'solid 1px pink' : 'solid 1px #fff'}
                 p={'20px 10px'}
                 cursor={'pointer'}
                 mt={'18px'}
                 // display={item._id == id?"block":"none"}
                 borderRadius={'10px'}
-                onClick={() => {                  setID(item._id);
+                onClick={() => {
+                  setID(item._id);
                   handleParentCategoryClick(item._id);
                 }}
               >
@@ -632,58 +715,58 @@ useEffect(() => {
                   justifyContent={'space-between'}
                   p={'0px 35px'}
                 >
-<CheckboxGroup onChange={e => {}}>
-  <Box>
-    {item?.subcategories?.length > 0 ? (
-      item?.subcategories?.map(primaryCategory => {
-        return (
-          <Box key={primaryCategory._id} lineHeight={'30px'}>
-            <Checkbox
-              onChange={() => {
-                setSelectedCheckbox(selectedCheckbox === primaryCategory._id ? null : primaryCategory._id);
-                setSelectedTertiaryOption(null);
-              myCheck(primaryCategory._id); 
-              }}
-              value={primaryCategory?._id}
-              color={'#fff'}
-              defaultChecked={selectedCheckbox === primaryCategory._id}
-              disabled={selectedCheckbox !== null && selectedCheckbox !== primaryCategory._id}
-              style={{ display: 'inline-block' }}
-            >
-              {primaryCategory?.name}
-            </Checkbox>
-            {/* Display tertiary data below the selected primary category */}
-            {selectedCheckbox === primaryCategory._id &&
-              primaryCategory.tertiary &&
-              primaryCategory.tertiary.map(tertiaryItem => {
-                return (
-                  <Box key={tertiaryItem._id} lineHeight={'30px'} marginLeft={'20px'}>
-                    <Checkbox
-                      onChange={() => {
-                        setSelectedTertiaryOption(tertiaryItem._id);
-                        tertiaryCheck(tertiaryItem._id);
-                      }}
-                      value={tertiaryItem._id}
-                      color={'#fff'}
-                      defaultChecked={selectedTertiaryOption === tertiaryItem._id}
-                      disabled={selectedTertiaryOption !== null && selectedTertiaryOption !== tertiaryItem._id}
-                      style={{ display: 'inline-block' }}
-                    >
-                      {tertiaryItem?.name}
-                    </Checkbox>
-                  </Box>
-                );
-              })}
-          </Box>
-        );
-      })
-    ) : (
-      <Text fontSize={'18px'} color={'white'}>
-        No Data Found
-      </Text>
-    )}
-  </Box>
-</CheckboxGroup>
+                  <CheckboxGroup onChange={e => { }}>
+                    <Box>
+                      {item?.subcategories?.length > 0 ? (
+                        item?.subcategories?.map(primaryCategory => {
+                          return (
+                            <Box key={primaryCategory._id} lineHeight={'30px'}>
+                              <Checkbox
+                                onChange={() => {
+                                  setSelectedCheckbox(selectedCheckbox === primaryCategory._id ? null : primaryCategory._id);
+                                  setSelectedTertiaryOption(null);
+                                  myCheck(primaryCategory._id);
+                                }}
+                                value={primaryCategory?._id}
+                                color={'#fff'}
+                                defaultChecked={selectedCheckbox === primaryCategory._id}
+                                disabled={selectedCheckbox !== null && selectedCheckbox !== primaryCategory._id}
+                                style={{ display: 'inline-block' }}
+                              >
+                                {primaryCategory?.name}
+                              </Checkbox>
+                              {/* Display tertiary data below the selected primary category */}
+                              {selectedCheckbox === primaryCategory._id &&
+                                primaryCategory.tertiary &&
+                                primaryCategory.tertiary.map(tertiaryItem => {
+                                  return (
+                                    <Box key={tertiaryItem._id} lineHeight={'30px'} marginLeft={'20px'}>
+                                      <Checkbox
+                                        onChange={() => {
+                                          setSelectedTertiaryOption(tertiaryItem._id);
+                                          tertiaryCheck(tertiaryItem._id);
+                                        }}
+                                        value={tertiaryItem._id}
+                                        color={'#fff'}
+                                        defaultChecked={selectedTertiaryOption === tertiaryItem._id}
+                                        disabled={selectedTertiaryOption !== null && selectedTertiaryOption !== tertiaryItem._id}
+                                        style={{ display: 'inline-block' }}
+                                      >
+                                        {tertiaryItem?.name}
+                                      </Checkbox>
+                                    </Box>
+                                  );
+                                })}
+                            </Box>
+                          );
+                        })
+                      ) : (
+                        <Text fontSize={'18px'} color={'white'}>
+                          No Data Found
+                        </Text>
+                      )}
+                    </Box>
+                  </CheckboxGroup>
 
 
 
