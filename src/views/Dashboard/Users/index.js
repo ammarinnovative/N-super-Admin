@@ -32,7 +32,7 @@ export default function Index() {
   const [data, setData] = useState([]);
   const [val, setVal] = useState('team');
   const selector = useSelector(state => state);
-const toast = useToast();
+  const toast = useToast();
 
   useEffect(() => {
     if (selector) {
@@ -230,7 +230,7 @@ const toast = useToast();
                                 />
                               </Td>
                               <Td>
-                                <Button onClick={() => updateStatus(item?._id, true)}>Active</Button>
+                                <Button onClick={() => updateStatus(item?._id, true)}>In-Active</Button>
                               </Td>
                             </Tr>
                           );
@@ -275,6 +275,9 @@ const toast = useToast();
                                   flex="1"
                                   Btnctn={'View Details'}
                                 />
+                              </Td>
+                              <Td>
+                                <Button onClick={() => updateStatus(item?._id, false)}>Active</Button>
                               </Td>
                             </Tr>
                           )
