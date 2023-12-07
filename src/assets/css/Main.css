@@ -165,3 +165,19 @@ option
 
 
 } */
+
+ul.pagination {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin: 0 20px 0 0 !important;
+  color: #fff;
+}
+
+li.page-item.active {
+  background: #dc0b9b;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  text-align: center;
+}

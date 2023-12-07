@@ -1,12 +1,22 @@
-import { Table, Thead, Tbody, Tr, Th, Td, Image, Stack, Tooltip, Box, Text, Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalOverlay, ModalFooter, FormLabel, Input, Select, useToast } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Image, Stack, Tooltip, Box, Text, Button, useDisclosure, Modal, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalOverlay, ModalFooter, FormLabel, Input, Select, useToast, Spinner } from '@chakra-ui/react';
 import MainDashboard from '../MainDashboard';
 import { GET, PUT } from "../../../utilities/ApiProvider";
 import { useEffect, useState } from 'react';
 import { imgUrl } from "../../../utilities/Config";
 import CustomPara from '../../../components/Website/Paragraph/CustomPara';
 import { useSelector } from 'react-redux';
+import ReactPaginate from 'react-paginate';
 
 const DrinkTable = () => {
+
+  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+
+  const [PageCount, setPageCount] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected + 1);
+  }
 
   const OverlayOne = () => (
     <ModalOverlay
@@ -20,15 +30,23 @@ const DrinkTable = () => {
   const { isOpen: isAddSubscriptionOpen, onOpen: onAddSubscriptionOpen, onClose: onAddSubscriptionClose } = useDisclosure()
   const [data, setData] = useState([]);
   const [overlay, setOverlay] = useState(<OverlayOne />);
+  const [loadingDrinks, setLoadingDrinks] = useState(false);
 
-  const getData = async () => {
+  const getData = async (currentPage) => {
+    setLoadingDrinks(true);
     try {
-      const res = await GET("admin/allDrinks", {});
+      const res = await GET(`admin/allDrinks?limit=20&page=${currentPage}`, {});
+      console.log(res)
       setData(res.data);
+      setPageCount(Math.ceil(res.paginate.totalRecords / 20))
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
+    setLoadingDrinks(false);
   };
+  useEffect(() => {
+    getData(currentPage);
+  }, [currentPage]);
 
   const [listOfCategories, setListOfCategories] = useState([]);
 
@@ -157,6 +175,48 @@ const DrinkTable = () => {
 
   return (
     <MainDashboard>
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        justifyContent={'flex-end'}
+        margin={'30px 0'}
+      >
+        <Box>
+          {/* <Input
+            placeholder='search'
+            color={'#fff'}
+            border={'1px solid'}
+            borderColor={'#fff'}
+            outlineColor={'#fff'}
+            w={'400px'}
+          /> */}
+          {
+            loadingDrinks ?
+              <Spinner ml={'-40px'} color='#dc0b9b' />
+              :
+              null
+          }
+        </Box>
+        <ReactPaginate
+          previousLabel={'<'}
+          nextLabel={'>'}
+          breakLabel={'...'}
+          pageCount={PageCount}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName={'pagination justify-content-center'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+          previousClassName={'page-item'}
+          previousLinkClassName={'page-link'}
+          nextClassName={'page-item'}
+          nextLinkClassName={'page-link'}
+          breakClassName={'page-item'}
+          breakLinkClassName={'page-link'}
+          activeClassName={'active'}
+        />
+      </Stack>
       <Stack overflowX="auto">
         <Table variant="simple">
           <Thead>
@@ -296,6 +356,7 @@ const DrinkTable = () => {
         </ModalContent>
 
       </Modal>
+
     </MainDashboard>
   );
 };
