@@ -55,15 +55,15 @@ export default function Index() {
                             <Text color={'#fff'}>12 Drinks</Text>
                         </Box>
 
-                        <Stack direction={'row'} columnGap={'2'}>
+                        {/* <Stack direction={'row'} columnGap={'2'}>
                             <Box>
                                 <Text color={'#fff'}>One</Text>
                             </Box>
                             <Box> <Text color={'#fff'}>Two</Text></Box>    
-                        </Stack>            
+                        </Stack>             */}
 
                     </Stack>
-                    <Stack
+                    {/* <Stack
                         w={'30%'}
                         bgColor={'#DC0A9B'}
                         p={'20px 30px'}
@@ -132,7 +132,7 @@ export default function Index() {
                             >08/27</Text>
 
                         </Box>
-                    </Stack>
+                    </Stack> */}
 
                 </Stack>
                 {/* Second row stack Ends */}
