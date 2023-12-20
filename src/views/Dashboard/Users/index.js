@@ -227,6 +227,7 @@ export default function Index() {
                                   Url={'/dashboard/Users/usersdetails'}
                                   flex="1"
                                   Btnctn={'View Details'}
+                                  data={item}
                                 />
                               </Td>
                               <Td>
