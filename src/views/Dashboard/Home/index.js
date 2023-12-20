@@ -29,9 +29,9 @@ import { GET } from '../../../utilities/ApiProvider';
 export default function Index() {
   const [user, setUser] = useState({});
   const [data, setData] = useState([]);
-  const [totalSales,setTotalSales] =useState([]);
-  const [timeFrameData,setTimeFrameData] =useState([]);
-  const [] =useState([]);
+  const [totalSales, setTotalSales] = useState([]);
+  const [timeFrameData, setTimeFrameData] = useState([]);
+  const [] = useState([]);
   const selector = useSelector(state => state);
 
   useEffect(() => {
@@ -47,9 +47,9 @@ export default function Index() {
     setData(res?.data);
   };
 
-  const getChartData = async ()=>{
-    const res = await GET("admin/analytics?timeframe=weekly",{
-      authorization:`bearer ${user?.verificationToken}`
+  const getChartData = async () => {
+    const res = await GET("admin/analytics?timeframe=weekly", {
+      authorization: `bearer ${user?.verificationToken}`
     });
     setTotalSales(res?.data?.totalSales);
     setTimeFrameData(res?.data?.timeframeData)
@@ -63,14 +63,14 @@ export default function Index() {
     }
   }, [user]);
 
-  
+
 
   return (
     <>
       <MainDashboard title={'Home'}>
         {/* First row stack starts */}
-        <Stack p={'4'} direction={'row'}>
-          <Stack mb={'6'} direction={'row'} w={'30%'}>
+        <Stack p={'4'} direction={'row'} justifyContent={'space-between'}>
+          <Stack mb={'6'} direction={'row'} w={'40%'}>
             {/* Upload menu icon div starts */}
             <Box>
               <CustomHeading
@@ -86,7 +86,11 @@ export default function Index() {
             </Box>
             <Box pl={'20px'}>
               <Text
-                p={'50px 30px'}
+                width={'100px'}
+                height={'100px'}
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'center'}
                 border={'dotted 2px #fff'}
                 borderRadius={'12px'}
               >
@@ -101,73 +105,68 @@ export default function Index() {
             </Box>
             {/* Upload menu icon div Ends */}
           </Stack>
-
           <Stack pb={'20'} pl={'25px'} gap={'6'}>
             {/* <OrderBox /> */}
             <Box w={'100%'} display={'inline-block'} direction={'row'}>
-              <Flex>
-                <Box display={'inline-block'} w={'79%'}>
-                  <CustomHeading
-                    textAlign={'left'}
-                    fontSize={'20px'}
-                    color={'#fff'}
-                  >
-                    Recenet Menu
-                  </CustomHeading>
-                </Box>
-                <Box display={'inline-block'} w={'19%'}>
-                  <BorderButton Url={'/dashboard/menu'} flex="1" Btnctn={'View All Menu'} />
-                </Box>
-              </Flex>
+              <Box display={'inline-block'} >
+                <BorderButton Url={'/dashboard/menu'} flex="1" Btnctn={'View All Menu'} />
+              </Box>
             </Box>
-            <Stack direction={'row'} gap={'4'}>
-              {data?.recentMenu?.length > 0 ? (
-                data?.recentMenu?.map(item => {
-                  return (
-                    <Link>
-                      <Box
-                        key={item?._id}
-                        position={'relative'}
-                        pr={'4'}
-                        display={'flex'}
-                        justifyContent={'right'}
-                        alignItems={'flex-end'}
-                        borderRadius={'8px'}
-                        h={'125px'}
-                        w={'198px'}
-                        zIndex={'1'}
-                        backgroundImage={imgUrl + item?.category_image}
-                        _before={{
-                          content: "''",
-                          w: '100%',
-                          h: '100%',
-                          position: 'absolute',
-                          bg: '#000',
-                          right: '0',
-                          left: '0',
-                          zIndex: '-1',
-                          borderRadius: '6px',
-                          opacity: '0.6',
-                        }}
-                      >
-                        <CustomHeading
-                          fontSize={'25px'}
-                          fontWeight={'700'}
-                          color={'#fff'}
-                        >
-                          {item?.name}
-                        </CustomHeading>
-                      </Box>
-                    </Link>
-                  );
-                })
-              ) : (
-                <Text fontSize={'18px'} color={'white'}>
-                  No Data Found
-                </Text>
-              )}
-            </Stack>
           </Stack>
+        </Stack>
+        <CustomHeading
+          textAlign={'left'}
+          fontSize={'20px'}
+          color={'#fff'}
+        >
+          Recent Menu
+        </CustomHeading>
+        <Stack direction={'row'} gap={'4'} flexWrap={'wrap'} mb={'40px'}>
+          {data?.recentMenu?.length > 0 ? (
+            data?.recentMenu?.map(item => {
+              return (
+                <Link>
+                  <Box
+                    key={item?._id}
+                    position={'relative'}
+                    pr={'4'}
+                    display={'flex'}
+                    justifyContent={'right'}
+                    alignItems={'flex-end'}
+                    borderRadius={'8px'}
+                    h={'110px'}
+                    w={'170px'}
+                    zIndex={'1'}
+                    backgroundImage={imgUrl + item?.category_image}
+                    _before={{
+                      content: "''",
+                      w: '100%',
+                      h: '100%',
+                      position: 'absolute',
+                      bg: '#000',
+                      right: '0',
+                      left: '0',
+                      zIndex: '-1',
+                      borderRadius: '6px',
+                      opacity: '0.6',
+                    }}
+                  >
+                    <CustomHeading
+                      fontSize={'25px'}
+                      fontWeight={'700'}
+                      color={'#fff'}
+                    >
+                      {item?.name}
+                    </CustomHeading>
+                  </Box>
+                </Link>
+              );
+            })
+          ) : (
+            <Text fontSize={'18px'} color={'white'}>
+              No Data Found
+            </Text>
+          )}
         </Stack>
         {/* First row stack Ends */}
 
@@ -216,7 +215,7 @@ export default function Index() {
                 Active User's
               </Text>
               <Text color={'#f40095'} fontSize={'40px'}>
-               {data?.activeUsers}
+                {data?.activeUsers}
               </Text>
               <Link as={ReactLink} to={'/dashboard/users'} color={'#fff'}>
                 View All

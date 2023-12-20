@@ -23,6 +23,7 @@ import CustomPara from '../../../components/Website/Paragraph/CustomPara';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { GET } from '../../../utilities/ApiProvider';
+import Ownerprofile from '../../../assets/images/01.png';
 
 export default function Menu() {
   const [user, setUser] = useState({});
@@ -86,7 +87,7 @@ export default function Menu() {
               />
             </Box>
           </Stack>
-          <Stack direction={'row'} gap={'4'}>
+          {/* <Stack direction={'row'} gap={'4'}>
             <Link>
               <Box
                 position={'relative'}
@@ -155,7 +156,7 @@ export default function Menu() {
                 </CustomHeading>
               </Box>
             </Link>
-          </Stack>
+          </Stack> */}
           <Stack>
             <Box>
               <CustomHeading
@@ -171,7 +172,7 @@ export default function Menu() {
                 data?.map(item => {
                   return (
                     <Box key={item?._id} w={'339px'}>
-                      <Img h={'400px'} w={'100%'} src={imgUrl+item?.pictures[0]} />
+                      <Img h={'250px'} mb={'20px'} w={'100%'} objectFit={'contain'} src={item?.pictures[0] ? `${imgUrl}${item?.pictures[0]}` : Ownerprofile} />
                       <Stack p={'3'} bg={'dashbg.100'}>
                         <CustomHeading
                           textAlign={'left'}
@@ -181,8 +182,8 @@ export default function Menu() {
                         >
                           {item?.menu_name}
                         </CustomHeading>
-                        <CustomPara color={'brand.800'} fontSize={'14px'}>
-                         {item?.description}
+                        <CustomPara color={'brand.800'} fontSize={'14px'} overflow="hidden" whiteSpace="noWrap" textOverflow="ellipsis">
+                          {item?.description}
                         </CustomPara>
                         <Box>
                           <Flex gap={'2'}>

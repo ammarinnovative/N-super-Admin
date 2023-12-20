@@ -2,7 +2,7 @@ import { Link } from '@chakra-ui/react';
 import React from 'react';
 import { Link as ReactLink } from 'react-router-dom';
 
-export default function BorderButton({ Btnctn, Url ,w}) {
+export default function BorderButton({ Btnctn, Url, w, data }) {
   return (
     <>
       <Link
@@ -18,6 +18,10 @@ export default function BorderButton({ Btnctn, Url ,w}) {
         borderRadius={'6px'}
         color={'#fff'}
         display={'block'}
+        state={data ?? null}
+        textOverflow={'ellipsis'}
+        overflow={'hidden'}
+        whiteSpace={'nowrap'}
       >
         {Btnctn}
       </Link>

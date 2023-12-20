@@ -128,8 +128,8 @@ export default function Index() {
           <Stack bg={'dashbg.100'} p={'6'}>
             <Tabs>
               <TabList mb={'6'} gap={'4'} borderBottom={'0px solid'}>
-                <Tab sx={settb}>Profile Setting</Tab>
-                <Tab sx={settb}>My Team</Tab>
+                {/* <Tab sx={settb}>Profile Setting</Tab>
+                <Tab sx={settb}>My Team</Tab> */}
               </TabList>
 
               <TabPanels>

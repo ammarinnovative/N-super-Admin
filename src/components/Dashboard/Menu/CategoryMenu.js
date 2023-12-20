@@ -162,7 +162,7 @@ export default function OrderSalesCharts({ fields, setDatas, datas, getSubCatId,
     if (selectedId !== datas.parent) {
       setDatas((prevState) => ({
         ...prevState,
-        parent: selectedId,
+        parent: parentCategory,
       }));
     } else {
 
@@ -207,20 +207,21 @@ export default function OrderSalesCharts({ fields, setDatas, datas, getSubCatId,
         authorization: `bearer ${token}`,
       });
       console.log(res);
-      if (res.status == 'success') {
+      if (res.status === 200) {
         toast({
           position: 'bottom-left',
           isClosable: true,
-          description: 'Success',
+          description: res?.message ?? "Success",
           duration: 5000,
           status: 'success',
         });
         onAddSubCategoryClose();
+        getData()
       } else {
         toast({
           position: 'bottom-left',
           isClosable: true,
-          description: 'Something went wrong',
+          description: res?.message ?? "Something went wrong!",
           duration: 5000,
           status: 'error',
         });
@@ -613,12 +614,13 @@ export default function OrderSalesCharts({ fields, setDatas, datas, getSubCatId,
           data?.map(item => {
             return (
               <Stack
-                border={item._id == id ? 'solid 1px pink' : 'solid 1px #fff'}
+                border={item._id == datas?.parent ? 'solid 1px #dc0b9b' : 'solid 1px #fff'}
                 p={'20px 10px'}
                 cursor={'pointer'}
                 mt={'18px'}
                 // display={item._id == id?"block":"none"}
                 borderRadius={'10px'}
+                key={item?._id}
                 onClick={() => {
                   setID(item._id);
                   handleParentCategoryClick(item._id);
@@ -628,6 +630,7 @@ export default function OrderSalesCharts({ fields, setDatas, datas, getSubCatId,
                   borderBottom={'solid 1px #fff'}
                   w={'100%'}
                   direction={'row'}
+                  borderColor={item._id === datas?.parent ? '#dc0b9b' : '#fff'}
                   justifyContent={'space-between'}
                   pb={'20px'}
                 >
@@ -660,7 +663,7 @@ export default function OrderSalesCharts({ fields, setDatas, datas, getSubCatId,
                     >
                       Add
                     </Button>
-                    <Button
+                    {/* <Button
                       bg={'transparent'}
                       textAlign={'center'}
                       margin={'auto'}
@@ -699,14 +702,14 @@ export default function OrderSalesCharts({ fields, setDatas, datas, getSubCatId,
                       }}
                     >
                       Remove
-                    </Button>
-                    <Link ml={'10px'}>
+                    </Button> */}
+                    {/* <Link ml={'10px'}>
                       <Icon
                         fontSize={'20px'}
                         color={'#fff'}
                         as={MdKeyboardArrowDown}
                       />
-                    </Link>
+                    </Link> */}
                   </Box>
                 </Stack>
                 <Stack

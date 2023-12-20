@@ -91,9 +91,9 @@ export default function OrderSalesCharts({ timeFrameData, totalSales }) {
           >
             Membership Subscribers
           </CustomHeading>
-          <Box>
+          {/* <Box>
             <BorderButton Url={'/'} Btnctn={'Last 7 days'} />
-          </Box>
+          </Box> */}
         </Stack>
         <Box bg={'#212121'} p={'41px 20px'}>
           <Line options={options} data={data} />

@@ -38,7 +38,7 @@ import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { FaFacebook } from 'react-icons/fa';
 import { FiInstagram } from 'react-icons/fi';
-import { imgUrl } from '../../../utilities/Config';
+import { imgUrl, imgUrlNew } from '../../../utilities/Config';
 import { AiOutlineTwitter } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillCar } from 'react-icons/ai';
@@ -81,6 +81,7 @@ export default function Index() {
     const res = await GET(`admin/bar/details/${params.id}`, {
       authorization: `bearer ${user?.verificationToken}`,
     });
+    console.log(res?.data)
     setDatas(res?.data);
   };
 
@@ -229,10 +230,10 @@ export default function Index() {
                   mb={'0'}
                   fontSize={'18px'}
                 >
-                  Tito's Handmade Vodka
+                  {datas?.barName ?? 'Loading...'}
                 </CustomHeading>
                 <CustomPara color={'brand.800'} fontSize={'14px'}>
-                  Louisville, KY
+                  {datas?.city ?? 'Loading...'}
                 </CustomPara>
 
                 <Stack direction={'row'} alignItems={'center'}>
@@ -263,14 +264,14 @@ export default function Index() {
                           </Link>
                         </MenuItem>
                         {
-                          datas?.isSuspended?
-                          <MenuItem onClick={SuspendAccount}>
-                          Active Account
-                        </MenuItem>:<MenuItem onClick={SuspendAccount}>
-                          Block Account
-                        </MenuItem>
+                          datas?.isSuspended ?
+                            <MenuItem onClick={SuspendAccount}>
+                              Active Account
+                            </MenuItem> : <MenuItem onClick={SuspendAccount}>
+                              Block Account
+                            </MenuItem>
                         }
-                        
+
                       </MenuList>
                     </Menu>
                   </Box>
@@ -295,7 +296,7 @@ export default function Index() {
                 w={'250px'}
               >
                 <CustomHeading
-                  fontSize={'18px'}
+                  fontSize={'15px'}
                   color={'#fff'}
                   textAlign={'left'}
                   mb={'20px'}
@@ -307,7 +308,7 @@ export default function Index() {
                   textAlign={'center'}
                   fontSize={'40px'}
                 >
-                  $10,214
+                  ${datas?.totalRevenue}
                 </CustomPara>
               </Box>
               <Box
@@ -318,19 +319,19 @@ export default function Index() {
                 w={'250px'}
               >
                 <CustomHeading
-                  fontSize={'18px'}
+                  fontSize={'15px'}
                   color={'#fff'}
                   textAlign={'left'}
                   mb={'20px'}
                 >
-                  Total Revenue
+                  Total Sales
                 </CustomHeading>
                 <CustomPara
                   marginBottom={'0'}
                   textAlign={'center'}
                   fontSize={'40px'}
                 >
-                  $10,214
+                  ${datas?.totalSales}
                 </CustomPara>
               </Box>
               <Box
@@ -341,19 +342,19 @@ export default function Index() {
                 w={'250px'}
               >
                 <CustomHeading
-                  fontSize={'18px'}
+                  fontSize={'15px'}
                   color={'#fff'}
                   textAlign={'left'}
                   mb={'20px'}
                 >
-                  Total Revenue
+                  Total Orders
                 </CustomHeading>
                 <CustomPara
                   marginBottom={'0'}
                   textAlign={'center'}
                   fontSize={'40px'}
                 >
-                  $10,214
+                  ${datas?.totalOrders}
                 </CustomPara>
               </Box>
               <Box
@@ -364,19 +365,19 @@ export default function Index() {
                 w={'250px'}
               >
                 <CustomHeading
-                  fontSize={'18px'}
+                  fontSize={'15px'}
                   color={'#fff'}
                   textAlign={'left'}
                   mb={'20px'}
                 >
-                  Total Revenue
+                  Total Cancelled Orders
                 </CustomHeading>
                 <CustomPara
                   marginBottom={'0'}
                   textAlign={'center'}
                   fontSize={'40px'}
                 >
-                  $10,214
+                  ${datas?.totalCancelledOrders}
                 </CustomPara>
               </Box>
             </Stack>
@@ -410,7 +411,7 @@ export default function Index() {
                 </CustomHeading>
               </Box>
               <Box>
-                <Link as={ReactLink} to={'./'}>
+                <Link as={'a'} target='_blank' to={`${datas?.fbUrl}`}>
                   <Icon
                     color={'#fff'}
                     fontSize={'20px'}
@@ -418,7 +419,7 @@ export default function Index() {
                     as={FaFacebook}
                   />
                 </Link>
-                <Link as={ReactLink} to={'./'}>
+                <Link as={'a'} target='_blank' to={`${datas?.instagramUrl}`}>
                   <Icon
                     color={'#fff'}
                     fontSize={'20px'}
@@ -426,7 +427,7 @@ export default function Index() {
                     as={FiInstagram}
                   />
                 </Link>
-                <Link as={ReactLink} to={'./'}>
+                <Link as={'a'} target='_blank' to={`${datas?.twitterUrl}`}>
                   <Icon
                     color={'#fff'}
                     fontSize={'20px'}
@@ -445,7 +446,7 @@ export default function Index() {
               alignItems={'center'}
               textAlign={'left'}
             >
-              <Box
+              {/* <Box
                 bg={'#272727'}
                 p={'22px 40px'}
                 borderRadius={'11px'}
@@ -461,8 +462,8 @@ export default function Index() {
                   <Icon as={AiOutlineHeart} /> 210 Favorites
                 </CustomHeading>
                 <BorderButton w={'full'} Url={'./'} Btnctn={'View'} />
-              </Box>
-              <Box
+              </Box> */}
+              {/* <Box
                 bg={'#272727'}
                 p={'22px 40px'}
                 borderRadius={'11px'}
@@ -478,7 +479,7 @@ export default function Index() {
                   <Icon as={AiFillCar} /> 17 Min
                 </CustomHeading>
                 <BorderButton w={'full'} Url={'./'} Btnctn={'View Location'} />
-              </Box>
+              </Box> */}
               <Box
                 bg={'#272727'}
                 p={'22px 40px'}
@@ -494,7 +495,7 @@ export default function Index() {
                 >
                   <Icon as={CgWebsite} /> Website
                 </CustomHeading>
-                <BorderButton w={'full'} Url={'./'} Btnctn={'View Website'} />
+                <BorderButton w={'full'} Url={'./'} Btnctn={`${datas?.url ?? 'Visit'}`} />
               </Box>
               <Box
                 bg={'#272727'}
@@ -511,7 +512,7 @@ export default function Index() {
                 >
                   <Icon as={FiPhoneCall} /> Call
                 </CustomHeading>
-                <BorderButton w={'full'} Url={'./'} Btnctn={'Call To'} />
+                <BorderButton w={'full'} Url={`tel:${datas?.phone}`} Btnctn={`${datas?.phone}`} />
               </Box>
             </Stack>
           </Box>
@@ -659,12 +660,12 @@ export default function Index() {
                         House Favorites Drinks
                       </CustomHeading>
                     </Box>
-                    <Stack direction={'row'} gap={'4'}>
-                      {datas?.houseOfFav && datas?.houseOfFav.length > 0 ? (
-                        datas?.houseOfFav?.map(item => {
+                    <Stack direction={'row'} gap={'4'} flexWrap={'wrap'}>
+                      {datas?.drinks && datas?.drinks.length > 0 ? (
+                        datas?.drinks?.map(item => {
                           return (
                             <Box key={item?._id} w={'339px'}>
-                              <Img src={imgUrl + item?.pictures[0]} />
+                              <Img h={'250px'} mb={'20px'} w={'100%'} objectFit={'contain'} src={item?.pictures[0] ? `${imgUrl}${item?.pictures[0]}` : Ownerprofile} />
                               <Stack p={'3'} bg={'dashbg.100'}>
                                 <CustomHeading
                                   textAlign={'left'}
@@ -672,26 +673,70 @@ export default function Index() {
                                   mb={'0'}
                                   fontSize={'21px'}
                                 >
-                                  {item?.name}
+                                  {item?.menu_name}
                                 </CustomHeading>
-                                <CustomHeading
-                                  textAlign={'left'}
-                                  color={'#fff'}
-                                  mb={'0'}
-                                  fontSize={'21px'}
-                                >
+                                <CustomPara color={'brand.800'} fontSize={'14px'} overflow="hidden" whiteSpace="noWrap" textOverflow="ellipsis">
                                   {item?.description}
-                                </CustomHeading>
-
+                                </CustomPara>
                                 <Box>
+                                  <Flex gap={'2'}>
+                                    <CustomHeading
+                                      mb={'0'}
+                                      color={'#fff'}
+                                      fontSize={'17px'}
+                                      textAlign={'left'}
+                                    >
+                                      Category:{' '}
+                                    </CustomHeading>
+                                    <CustomPara> {item?.category?.name}</CustomPara>
+                                  </Flex>
+                                  <Flex gap={'2'}>
+                                    <CustomHeading
+                                      color={'#fff'}
+                                      fontSize={'17px'}
+                                      textAlign={'left'}
+                                    >
+                                      Subcategory:{' '}
+                                    </CustomHeading>
+                                    <CustomPara> {item?.subCategory?.name}</CustomPara>
+                                  </Flex>
                                   <BorderButton
                                     w={'full'}
                                     Url={'./'}
-                                    Btnctn={`${item?.min}$- ${item.max}$`}
+                                    Btnctn={`$${item?.variation[0]?.price}`}
                                   />
                                 </Box>
                               </Stack>
                             </Box>
+                            // <Box key={item?._id} w={'339px'}>
+                            //   <Img src={imgUrl + item?.pictures[0]} />
+                            //   <Stack p={'3'} bg={'dashbg.100'}>
+                            //     <CustomHeading
+                            //       textAlign={'left'}
+                            //       color={'#fff'}
+                            //       mb={'0'}
+                            //       fontSize={'21px'}
+                            //     >
+                            //       {item?.name}
+                            //     </CustomHeading>
+                            //     <CustomHeading
+                            //       textAlign={'left'}
+                            //       color={'#fff'}
+                            //       mb={'0'}
+                            //       fontSize={'21px'}
+                            //     >
+                            //       {item?.description}
+                            //     </CustomHeading>
+
+                            //     <Box>
+                            //       <BorderButton
+                            //         w={'full'}
+                            //         Url={'./'}
+                            //         Btnctn={`${item?.min}$- ${item.max}$`}
+                            //       />
+                            //     </Box>
+                            //   </Stack>
+                            // </Box>
                           );
                         })
                       ) : (
@@ -794,21 +839,20 @@ export default function Index() {
                       <Stack
                         key={item?._id}
                         direction={'row'}
-                        flexWrap={'wrap'}
-                        justifyContent={'space-between'}
                         borderBottom={'solid 1px #3b3b3b'}
                         p={'30px 0px'}
+                        gap={'25px'}
                       >
-                        <Box>
+                        <Box w={'200px'}>
                           <Stack
                             direction={'row'}
-                            flexWrap={'wrap'}
-                            justifyContent={'space-between'}
                             alignItems={'center'}
+                            spacing={0}
+                            gap={'15px'}
                           >
                             <Box>
                               <Img
-                                src={imgUrl + item?.profile_picture}
+                                src={imgUrlNew + item?.profile_picture}
                                 w={'80px'}
                                 h={'80px'}
                               />
@@ -840,17 +884,17 @@ export default function Index() {
                             textAlign={'left'}
                             mb={'10px'}
                           >
-                            Total Tip
+                           Email
                           </CustomHeading>
                           <CustomPara
                             marginBottom={'0'}
                             textAlign={'center'}
-                            fontSize={'28px'}
+                            fontSize={'16px'}
                           >
-                            $15.00
+                            {item?.email}
                           </CustomPara>
                         </Box>
-                        <Box
+                        {/* <Box
                           bg={'#202020'}
                           p={'23px 34px'}
                           borderRadius={'11px'}
@@ -893,7 +937,7 @@ export default function Index() {
                           >
                             $15.00
                           </CustomPara>
-                        </Box>
+                        </Box> */}
                       </Stack>
                     );
                   })

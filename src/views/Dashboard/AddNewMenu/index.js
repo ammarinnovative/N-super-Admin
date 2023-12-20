@@ -25,33 +25,55 @@ export default function Menu() {
     menu_name: '',
     description: '',
     // pictures: '',
-    parent:null,
-    subcategory:null,
-    tertiary:null
+    parent: null,
+    subcategory: null,
+    tertiary: null
   });
   const [data, setData] = useState({
     menu_name: '',
     description: '',
-    pictures: null, 
-    parent:null,
-    subcategory:null,
-    tertiary:null
+    pictures: null,
+    parent: null,
+    subcategory: null,
+    tertiary: null
   });
   const [user, setUser] = useState('');
-  console.log("mydata",data);
+
+  useEffect(() => {
+    console.log("mydata", data);
+  }, [data])
 
   const submitData = async () => {
     const formData = new FormData();
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        formData.append(key, data[key]);
-      }
+    // for (const key in data) {
+    //   if (data.hasOwnProperty(key)) {
+    //     formData.append(key, data[key]);
+    //   }
+    // }
+    formData.append('menu_name', data.menu_name);
+    formData.append('description', data.description);
+    formData.append('picture', data.pictures);
+
+    if (data.parent === null) {
+      toast({
+        position: 'bottom-left',
+        isClosable: true,
+        duration: 5000,
+        description: 'Category is required!',
+        status: 'error',
+      });
+    } else {
+      formData.append('parent', data.parent);
     }
-  
+
+    if (data.subcategory === null && data.tertiary === null) {
+      formData.append('subcategory', data.parent);
+    }
+
     try {
       const res = await POST('admin/menu', formData, {
         authorization: `bearer ${user?.verificationToken}`,
-      });      
+      });
       if (res?.message == "success") {
         toast({
           position: 'bottom-left',
@@ -106,9 +128,9 @@ export default function Menu() {
                 Enter your menu details
               </CustomHeading>
             </Box>
-            <Box>
+            {/* <Box>
               <BorderButton Url={'./'} Btnctn={'Continue'} />
-            </Box>
+            </Box> */}
           </Stack>
           {/* First Div Ends */}
 
@@ -122,6 +144,7 @@ export default function Menu() {
               <Stack w={'100%'}>
                 <Box>
                   <Input
+
                     w={'100%'}
                     py={'6'}
                     placeholder={'Menu Name'}
@@ -130,7 +153,7 @@ export default function Menu() {
                     border={'1px solid #fff !important'}
                     borderRadius={'10px'}
                     value={data.menu_name}
-                    onChange={(e)=>{setData({...data,menu_name:e.target.value})}}
+                    onChange={(e) => { setData({ ...data, menu_name: e.target.value }) }}
                     fontWeight={500}
                     color={'#fff !important'}
                     _focus={{
@@ -148,7 +171,7 @@ export default function Menu() {
                     height={'100px'}
                     value={data.description}
                     placeholder={'Description'}
-                    onChange={(e)=>{setData({...data,description:e.target.value})}}
+                    onChange={(e) => { setData({ ...data, description: e.target.value }) }}
                     fontSize={'14px'}
                     border={'1px solid #fff !important'}
                     fontWeight={500}
@@ -161,24 +184,25 @@ export default function Menu() {
                     _placeholder={{ color: '#fff' }}
                   ></Textarea>
                   <form id="data">
-                  <Input
-          color={'white'}
-          name=""
-          onChange={(e) => {
-            setData({ ...data, pictures:e.target.files[0]});
-          }}
-          borderColor="white"
-          border={'1px solid white'}
-          type="file"
-          multiple 
-        />
+                    <Input
+                      m={'15px 0'}
+                      color={'white'}
+                      name=""
+                      onChange={(e) => {
+                        setData({ ...data, pictures: e.target.files[0] });
+                      }}
+                      borderColor="white"
+                      border={'1px solid #fff'}
+                      type="file"
+                      multiple
+                    />
                   </form>
+                  <Button onClick={submitData}>submit</Button>
                 </Box>
               </Stack>
             </Box>
-            <Button onClick={submitData}>sub</Button>
 
-            <CategoryMenu  fields={fields} setDatas={setData} datas={data} setFields={setFields} token={user?.verificationToken} />
+            <CategoryMenu fields={fields} setDatas={setData} datas={data} setFields={setFields} token={user?.verificationToken} />
           </Stack>
           {/* Second Div Ends */}
         </Stack>

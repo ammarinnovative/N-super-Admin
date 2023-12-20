@@ -82,11 +82,11 @@ export default function BarOwner() {
                 {data.length} Bar Owners
               </CustomHeading>
             </Box>
-            <Stack direction={'row'} flexWrap={'wrap'} gap={'4'}>
+            <Stack direction={'row'} flexWrap={'wrap'} gap={'4'} spacing={0}>
               {data && data?.length > 0 ? (
                 data?.map(item => {
                   return (
-                    <Box w={'46%'}>
+                    <Box w={'23%'}>
                       {/* <Img src={menu1} /> */}
                       <Stack p={'3'} bg={'dashbg.100'} borderRadius={'10px'}>
                         <Stack
@@ -103,10 +103,11 @@ export default function BarOwner() {
                             gap={'4'}
                             justifyContent={'space-between'}
                             alignItems={'center'}
+                            mb={'20px'}
                           >
                             {item?.upload_logo ? (
                               <Box>
-                                <Image width={"50px"} borderRadius={"50%"} height={"50px"} src={imgUrl + item?.upload_logo} />
+                                <Image objectFit={'contain'} bgColor={'#fff'} width={"50px"} borderRadius={"50%"} height={"50px"} src={imgUrl + item?.upload_logo} />
                               </Box>
                             ) : (
                               <Box>
@@ -131,18 +132,15 @@ export default function BarOwner() {
                           <Box>{/* <MyRatingComponent /> */}</Box>
                         </Stack>
 
-                        <Box
-                           overflowY={'scroll'}
-                           h={'200px'}
-                        >
-                          <Flex gap={'2'}>
+                        <Box>
+                          {/* <Flex gap={'2'}>
                             <CustomHeading
-                              mb={'0'}
+                              mb={'20px'}
                               color={'#fff'}
                               fontSize={'22px'}
                               textAlign={'left'}
                             >
-                              Most Popular Products{' '}
+                              Most Popular Products:{' '}
                             </CustomHeading>
                           </Flex>
                           {item?.topMenus && item?.topMenus?.length > 0 ? (
@@ -167,7 +165,7 @@ export default function BarOwner() {
                                     alignItems={'center'}
                                   >
                                     <Box>
-                                      <Img src={imgUrl+val?.pictures[0]} w={'80px'} h={'80px'} />
+                                      <Img src={imgUrl + val?.pictures[0]} w={'80px'} h={'80px'} />
                                     </Box>
                                     <Box>
                                       <CustomHeading
@@ -176,7 +174,7 @@ export default function BarOwner() {
                                         mb={'0'}
                                         fontSize={'18px'}
                                       >
-                                        {val?.name??"No Name"}
+                                        {val?.name ?? "No Name"}
                                       </CustomHeading>
                                       <CustomPara
                                         color={'brand.800'}
@@ -203,8 +201,9 @@ export default function BarOwner() {
                             <Text fontSize={'18px'} color={'white'}>
                               No Data Found
                             </Text>
-                          )}
+                          )} */}
                           <BorderButton
+                            data={item?._id}
                             w={'full'}
                             Url={`/dashboard/barownerdetails/${item?._id}`}
                             Btnctn={'View Full Profile'}

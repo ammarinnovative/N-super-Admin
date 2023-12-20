@@ -205,7 +205,7 @@ export default function Index() {
                     fontSize={'23px'}
                     color={'#fff'}
                   >
-                    4 Total Members
+                    {totalMembers ?? '0'} Total Members
                   </CustomHeading>
                 </Box>
                 <TableContainer>
@@ -247,12 +247,12 @@ export default function Index() {
               <TabPanel>
                 <Box w={'100%'} p={'0px 10px'}>
                   <CustomHeading
-                    mb={'0'}
+                    mb={'10px'}
                     textAlign={'left'}
                     fontSize={'23px'}
                     color={'#fff'}
                   >
-                    4 Blocked Members
+                    {totalBlockedMembers} Blocked Members
                   </CustomHeading>
                 </Box>
                 <TableContainer>
