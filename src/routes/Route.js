@@ -44,6 +44,7 @@ import { useEffect } from 'react';
 import DrinkTable from '../views/Dashboard/Drink/Drink.js';
 import Addevents from '../views/Dashboard/Event/Addevents';
 import OrderDetails from '../views/Dashboard/OrderDetails/index.js';
+import Payments from '../views/Dashboard/Payments/Drink.js';
 
 
 
@@ -104,6 +105,7 @@ export default function AppRoute() {
                     <Route exact path="/dashboard/barowner" element={<Barowner />}></Route>
                     <Route exact path="/dashboard/orderdetails" element={<OrderDetails />}></Route>
                     <Route exact path="/dashboard/drinktable" element={<DrinkTable />}></Route>
+                    <Route exact path="/dashboard/payments" element={<Payments />}></Route>
 
                     {/* Dashboard-Routes */}
                     <Route exact path="*" element={<NotFound />}></Route>

@@ -2,12 +2,12 @@ import { Table, Thead, Tbody, Tr, Th, Td, Image, Stack, Tooltip, Box, Text, Butt
 import MainDashboard from '../MainDashboard';
 import { GET, POST, PUT } from "../../../utilities/ApiProvider";
 import { useEffect, useState } from 'react';
-import { imgUrl } from "../../../utilities/Config";
+import { imgUrl, imgUrlNew } from "../../../utilities/Config";
 import CustomPara from '../../../components/Website/Paragraph/CustomPara';
 import { useSelector } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 
-const DrinkTable = () => {
+const Payments = () => {
 
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
@@ -35,10 +35,12 @@ const DrinkTable = () => {
   const getData = async (currentPage) => {
     setLoadingDrinks(true);
     try {
-      const res = await GET(`admin/allDrinks?limit=20&page=${currentPage}`, {});
+      const res = await GET(`admin/bar/payments`, {
+        authorization: `bearer ${defaultUser?.verificationToken}`
+      });
       console.log(res)
       setData(res.data);
-      setPageCount(Math.ceil(res.paginate.totalRecords / 20))
+      // setPageCount(Math.ceil(res.paginate.totalRecords / 20))
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -222,7 +224,7 @@ const DrinkTable = () => {
               null
           }
         </Box>
-        <ReactPaginate
+        {/* <ReactPaginate
           previousLabel={'<'}
           nextLabel={'>'}
           breakLabel={'...'}
@@ -240,45 +242,34 @@ const DrinkTable = () => {
           breakClassName={'page-item'}
           breakLinkClassName={'page-link'}
           activeClassName={'active'}
-        />
+        /> */}
       </Stack>
       <Stack overflowX="auto">
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>Drink Name</Th>
-              <Th>Description</Th>
-              <Th>Category Name</Th>
-              <Th>Subcategory Name</Th>
-              <Th>Tertiary Category Name</Th>
-              <Th>Drink Image</Th>
-              <Th>Action</Th>
+              <Th>Bar Name</Th>
+              <Th>Bar Image</Th>
+              <Th>Address</Th>
+              <Th>City</Th>
+              <Th>State</Th>
+              <Th>Total Payment</Th>
             </Tr>
           </Thead>
           <Tbody>
             {data &&
               data.map((item) => (
-                <Tr color="white" mb="10px" key={item.id}>
-                  <Td>{item?.menu_name}</Td>
+                <Tr color="white" mb="10px" key={item._id}>
+                  <Td>{item?.bar.barName}</Td>
                   <Td>
-                    <Tooltip label={item?.description} fontSize="md">
-                      <Box maxW="200px" overflow="hidden" textOverflow="ellipsis">
-                        <Text fontSize="sm">
-                          {truncateText(item?.description ? item?.description : "----", 50)}
-                        </Text>
-                      </Box>
-                    </Tooltip>
-                  </Td>
-                  <Td>{item?.category?.name ? item?.category?.name : "----"}</Td>
-                  <Td>{item?.subCategory?.name ? item?.subCategory?.name : "----"}</Td>
-                  <Td>{item?.tertiaryCategory?.name ? item?.tertiaryCategory?.name : "----"}</Td>
-                  <Td>
-                    {item?.pictures && item?.pictures.length > 0 ? (
+                    {item?.bar.upload_logo ? (
                       <Image
-                        width="80px"
-                        height="80px"
+                        width="65px"
+                        height="65px"
                         borderRadius="50%"
-                        src={imgUrl + item?.pictures[0]}
+                        src={`${imgUrlNew}${item?.bar.upload_logo}`}
+                        objectFit={'contain'}
+                        bgColor={'#fff'}
                         alt="Drink"
                       />
                     ) : (
@@ -286,6 +277,19 @@ const DrinkTable = () => {
                     )}
                   </Td>
                   <Td>
+                    <Tooltip label={item?.description} fontSize="md">
+                      <Box maxW="200px" overflow="hidden" textOverflow="ellipsis">
+                        <Text fontSize="sm">
+                          {truncateText(item?.bar.address ? item?.bar.address : "----", 50)}
+                        </Text>
+                      </Box>
+                    </Tooltip>
+                  </Td>
+                  <Td>{item?.bar.city ? item?.bar.city : "----"}</Td>
+                  <Td>{item?.bar.state ? item?.bar.state : "----"}</Td>
+                  <Td>{item?.totalSales ? `$${item?.totalSales}` : "----"}</Td>
+
+                  {/* <Td>
                     <Button
                       onClick={() => {
                         setOverlay(<OverlayOne />);
@@ -316,7 +320,7 @@ const DrinkTable = () => {
                       display={'block'}
                       bgColor={item?.archive ? '#dc0b9b' : 'transparent'}
                     >{item?.archive ? 'Restore' : 'Archive'}</Button>
-                  </Td>
+                  </Td> */}
                 </Tr>
               ))}
           </Tbody>
@@ -403,4 +407,4 @@ const DrinkTable = () => {
   );
 };
 
-export default DrinkTable;
+export default Payments;

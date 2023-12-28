@@ -41,21 +41,22 @@ import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../../assets/images/logo/logo2.png';
+import { useSelector } from 'react-redux';
 
 const LinkItems = [
   { name: 'Home', icon: FiHome, url: '/dashboard' },
   { name: 'Menu', icon: FiTrendingUp, url: '/dashboard/menu' },
-  { name: 'Subscription', icon: AiOutlineDollar, url:'/dashboard/subscription' },
-  { name: 'Bar Owners', icon: AiOutlineDollar, url:'/dashboard/barowner' },
+  { name: 'Subscription', icon: AiOutlineDollar, url: '/dashboard/subscription' },
+  { name: 'Bar Owners', icon: AiOutlineDollar, url: '/dashboard/barowner' },
   // { name: 'Wallet', icon: AiOutlineDollar, url:'/dashboard/wallet' },
-  { name: 'Users', icon: AiOutlineDollar, url:'/dashboard/users' },
+  { name: 'Users', icon: AiOutlineDollar, url: '/dashboard/users' },
   // { name: 'Event', icon: FiStar ,url:'/dashboard/event'},
   // { name: 'Feed', icon: FiHome, url:'/dashboard/feed' }, 
   // { name: 'Analytics', icon: FiTrendingUp,url:'/dashboard/analytics' },
   // { name: 'promotions', icon: FiCompass,url : '/dashboard/promotions' },
-  { name: 'Settings', icon: FiStar,url:'/dashboard/setting' },
-  { name: 'Drink Table', icon: FiStar,url:'/dashboard/drinktable' },
-  // { name: 'Team Members', icon: FiSettings ,url:'/dashboard/teammembers' },
+  { name: 'Settings', icon: FiStar, url: '/dashboard/setting' },
+  { name: 'Drink Table', icon: FiStar, url: '/dashboard/drinktable' },
+  { name: 'Payments', icon: FiSettings ,url:'/dashboard/payments' },
   // { name: 'Contact Us', icon: FiSettings,url:'/dashboard/Contact' },
 ];
 
@@ -163,7 +164,8 @@ const NavItem = ({ icon, url, children, ...rest }) => {
 
 const MobileNav = ({ onOpen, title, ...rest }) => {
   const navigate = useNavigate();
-  const clear = ()=>{
+  const user = useSelector(state => state.value)
+  const clear = () => {
     navigate('/dashboard/login');
   }
 
@@ -225,8 +227,8 @@ const MobileNav = ({ onOpen, title, ...rest }) => {
                     spacing="1px"
                     ml="2"
                   >
-                    <Text fontSize="sm" color={'#7a7a7a'}>
-                      Justina Clark
+                    <Text fontSize="sm" color={'#7a7a7a'} textTransform={'capitalize'}>
+                      {user?.username}
                     </Text>
                     <Text fontSize="xs" color="#7a7a7a">
                       Admin
@@ -238,7 +240,7 @@ const MobileNav = ({ onOpen, title, ...rest }) => {
                 </HStack>
               </MenuButton>
               <MenuList
-              zIndex={"5"}
+                zIndex={"5"}
                 bg={useColorModeValue('white', 'gray.900')}
                 borderColor={useColorModeValue('gray.200', 'gray.700')}
               >
@@ -246,7 +248,7 @@ const MobileNav = ({ onOpen, title, ...rest }) => {
                 <MenuItem>Settings</MenuItem>
                 <MenuItem>Billing</MenuItem>
                 <MenuDivider />
-                <MenuItem onClick={()=>{clear()}}>Sign out</MenuItem>
+                <MenuItem onClick={() => { clear() }}>Sign out</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
